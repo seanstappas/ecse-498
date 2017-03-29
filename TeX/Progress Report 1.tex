@@ -1,0 +1,72 @@
+\documentclass[]{article}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage[lowtilde]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+	citecolor=black
+}
+\usepackage{indentfirst}	% auto-indent
+
+%opening
+\title{\textbf{Honours Thesis \\ Progress Report 1}}
+\author{Sean Stappas \\ 260639512}
+\date{February 8, 2017}
+
+\begin{document}
+\maketitle
+
+\section{Project Title}
+
+The project is Prometheus AI: Phase 1. As an Honours Thesis, this project is to be done alone. As such, all sections on group work (list of group members and group work report) have been omitted.
+
+\section{Project Supervisor}
+
+The project supervisor and advisor is Joseph Vybihal, professor in computer science at McGill University. Contact information can be found on his website: \url{http://www.cs.mcgill.ca/~jvybihal/}
+
+\section{Meetings}
+
+The following meetings occurred with the advisor:
+
+\begin{center}
+	\begin{tabular}{l l l p{10cm}}
+		\hline
+		Date & Start Time & End Time & Topic \\ \hline
+		January 12 & 2:00 PM & 2:30 PM & Initial discussion of what the project entails, including
+		deliverables and background knowledge.  \\ \hline
+		January 27 & 10:00 AM & 10:30 AM & Discussion of next steps in the project and scheduling of 
+		future meetings.\\ \hline
+		January 27 & 3:00 PM & 3:30 PM & First weekly ``scrum" meeting going over the previous week's work.  \\
+		\hline
+	\end{tabular}
+\end{center}
+
+It is now planned to meet every week at 3:00 PM on Friday to discuss the project with the advisor.
+
+\section{Project Readings}
+
+Many readings are relevant to the project, some of which I decided to read even before meeting Prof. Vybihal. The first thing that I decided to start reading was the classic book on artificial intelligence by Russell and Norvig \cite{russell2016artificial}. I focused on the introductory chapters, introducing the main concepts of AI and intelligent agents. I also skimmed through Chapter 17 on complex decision-making, and Chapter 18.7, which focuses on artificial neural networks.
+
+I then read many great online resources to improve my intuition about concepts in neural networks. First, I read a fantastic article by Christopher Olah on the intuition behind backpropagation \cite{colah2015}. I then read a short online book on the basics of modern neural networks by Michael Nielsen \cite{nielsen2015}. One final, more technical online book that I started reading was one on deep learning by Goodfellow, Bengio and Courville \cite{Goodfellow-et-al-2016}.
+
+Once I met with Prof. Vybihal, he shared some of his personal articles on the project and on general concepts in AI \cite{vybihal-expert,vybihal-model,vybihal-perceptron,vybihal-swarm}. These were essential to understand the system that I will be dealing with in this project. I then decided to also read up on expert systems in another article \cite{tripathi2011review}.
+
+I then met with some people working closely with Vybihal in his research, and they directed me to some other resources. Specifically, I then read some resources on Markov decision processes to plan the design of the Meta Reasoner stage of the project \cite{kolobov2012planning}.
+
+\section{Recent Progress}
+
+At this point, most of the work done has been in reading and researching the subject matter (see previous section). One difficulty that hindered progress was the fact that Prof. Vybihal was not available to meet for some time at the start of the semester. For this reason, I was not able to determine where I should place my efforts moving forward. After the recent meetings, however, I now have a clearer picture of what exactly needs to be done. Indeed, my work will focus mostly on two layers of the AI brain: the Knowledge Node Network (KNN) and the Expert System (ES). So far, I have completed a very basic skeleton of these two layers in some Java code inspired from Prof. Vybihal's specifications.
+
+\section{Future Plans}
+
+The plan for the future is to continue with the readings, since some of the aforementioned readings were only briefly touched upon and should be reviewed more carefully. I also plan to fill in most of the blanks of the Expert System (ES) skeleton to have a basic working prototype before the next report is due. To complete these goals, this week, I will finish reading up on Expert Systems. By the end of next week, I should have a basic model working, so that I may then begin working on a basic prototype of the Knowledge Node Network (KNN).
+
+%\renewcommand\refname{}
+\bibliographystyle{unsrt}
+\bibliography{readings}{}
+
+\end{document}

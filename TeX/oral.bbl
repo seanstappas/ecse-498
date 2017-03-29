@@ -1,0 +1,114 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.8 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\sortlist[entry]{nty/global/}
+  \entry{simbad}{misc}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{howpublished}{\url{http://simbad.sourceforge.net/index.php}}
+    \field{note}{(Accessed on 03/27/2017)}
+    \field{title}{Simbad 3D Robot Simulator}
+  \endentry
+
+  \entry{vybihal-expert}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=VJ}{%
+         family={Vybihal},
+         familyi={V\bibinitperiod},
+         given={Joseph},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VJ1}
+    \strng{fullhash}{VJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Expert Systems}
+    \field{year}{2016}
+  \endentry
+
+  \entry{vybihal-model}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=VJ}{%
+         family={Vybihal},
+         familyi={V\bibinitperiod},
+         given={Joseph},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VJ1}
+    \strng{fullhash}{VJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Full {AI} Model}
+    \field{year}{2016}
+  \endentry
+
+  \entry{vybihal-knowledge}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=VJ}{%
+         family={Vybihal},
+         familyi={V\bibinitperiod},
+         given={Joseph},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{VJ1}
+    \strng{fullhash}{VJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Knowledge Nodes}
+    \field{year}{2017}
+  \endentry
+
+  \entry{vybihal-lambda}{misc}{}
+    \name{author}{2}{}{%
+      {{hash=VJ}{%
+         family={Vybihal},
+         familyi={V\bibinitperiod},
+         given={Joseph},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=STR}{%
+         family={Shultz},
+         familyi={S\bibinitperiod},
+         given={Thomas\bibnamedelima R.},
+         giveni={T\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {AAAI}%
+    }
+    \strng{namehash}{VJSTR1}
+    \strng{fullhash}{VJSTR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Search in Analogical Reasoning}
+    \field{year}{1990}
+  \endentry
+\endsortlist
+\endinput

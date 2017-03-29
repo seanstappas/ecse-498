@@ -1,0 +1,67 @@
+\documentclass[]{article}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage[lowtilde]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+	citecolor=black
+}
+\usepackage{indentfirst}	% auto-indent
+
+%opening
+\title{\textbf{Honours Thesis \\ Progress Report 2}}
+\author{Sean Stappas \\ 260639512}
+\date{February 22, 2017}
+
+\begin{document}
+\maketitle
+
+\section{Project Title}
+
+The project is Prometheus AI: Phase 1. As an Honours Thesis, this project is to be done alone. As such, all sections on group work (list of group members and group work report) have been omitted.
+
+\section{Project Supervisor}
+
+The project supervisor and advisor is Joseph Vybihal, professor in computer science at McGill University. Contact information can be found on his website: \url{http://www.cs.mcgill.ca/~jvybihal/}
+
+\section{Meetings}
+
+The following meetings occurred with the advisor:
+
+\begin{center}
+	\begin{tabular}{l l l p{9.5cm}}
+		\textbf{Date} & \textbf{Start Time} & \textbf{End Time} & \textbf{Topic} \\ \hline
+		February 10 & 3:00 PM & 3:30 PM & Clarification of the required specifications for the expert system (ES), and knowledge node network (KNN). Feedback on initial Java skeleton of the ES and KNN. \\ \hline
+		February 17 & 3:00 AM & 3:30 AM & Feedback from professor after making some changes to his specifications for the ES. Feedback on semi-finalized Java ES. \\ \hline
+	\end{tabular}
+\end{center}
+
+\section{Project Readings}
+
+The list of readings are the same as the previous progress report. Recently, I focused more on the readings relating to expert systems \cite{tripathi2011review} and the articles provided by Prof. Vybihal concerning expert systems as part of the entire system to be constructed \cite{vybihal-expert,vybihal-model,vybihal-perceptron,vybihal-swarm}. Reading these sources more carefully was necessary to construct a basic prototype of the Expert System (ES) layer.
+
+\section{Recent Progress}
+
+As planned in the previous progress report, I have read further into expert systems using the readings described in the previous section.
+
+Also as planned, I have finished a basic prototype of the Expert System (ES) layer of the AI brain in Java. There are still some features to be added, such as the parsing of various operator tokens in the list of Rules and Facts, and the proper handling of Recommendations.
+
+Some basic testing, using fake Rules and Facts, was performed on the Expert System. However, there still is much more integration testing to be done once the other layers of the brain are close to completion.
+
+With this basic prototype completed, work can now begin on a prototype of the Knowledge Node Network (KNN), as will be described in the next section.
+
+\section{Future Plans}
+
+The plan for the near future is to read up more on knowledge node networks, and begin work on a basic Java prototype of the knowledge node network (KNN) layer of the AI brain.
+
+Based on feedback from Prof. Vybihal, the goal of the KNN layer is to serve as the memory of the AI, passing information from the Neural Network (NN) stage to the Expert System (ES) layer by cascading activation of memories. This is in contrast with the ES layer, which is just a basic logic reasoner, unaware of time or reality. the main functionality of the KNN layer comes from its Knowledge Nodes, which fire their output tags when their activation is greater than some threshold. This behavior will probably be the most difficult to create, and I expect the KNN layer to take slightly longer than the ES to finalize. Still, a basic working prototype should be finished before the next progress report.
+
+%\renewcommand\refname{}
+\bibliographystyle{unsrt}
+\bibliography{readings}{}
+
+\end{document}

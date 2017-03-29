@@ -1,0 +1,73 @@
+\documentclass[]{article}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage[lowtilde]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+	citecolor=black
+}
+\usepackage{indentfirst}	% auto-indent
+
+%opening
+\title{\textbf{Honours Thesis \\ Progress Report 3}}
+\author{Sean Stappas \\ 260639512}
+\date{March 15, 2017}
+
+\begin{document}
+	\maketitle
+	
+	\section{Project Title}
+	
+	The project is Prometheus AI: Phase 1. As an Honours Thesis, this project is to be done alone. As such, all sections on group work (list of group members and group work report) have been omitted.
+	
+	\section{Project Supervisor}
+	
+	The project supervisor and advisor is Joseph Vybihal, professor in computer science at McGill University. Contact information can be found on his website: \url{http://www.cs.mcgill.ca/~jvybihal/}
+	
+	\section{Meetings}
+	
+	The following meetings occurred with the advisor:
+	
+	\begin{center}
+		\begin{tabular}{l l l p{9.5cm}}
+			\textbf{Date} & \textbf{Start Time} & \textbf{End Time} & \textbf{Topic} \\ \hline
+			February 24 & 3:00 PM & 3:30 PM & Further specifications on the entire system, more particularly the Knowledge Node Network (KNN). \\ \hline
+			March 10 & 3:00 PM & 3:30 PM & Feedback from professor after making some changes to his specifications for the KNN. Feedback on semi-finalized Java KNN. \\ \hline
+		\end{tabular}
+	\end{center}
+	
+	\section{Project Readings}
+	
+	The readings for the past three weeks focused mostly on the Knowledge Node Network (KNN) layer of the Prometheus AI, since the goal was to finish a basic prototype of the KNN. The main source I am basing my work on is the article by Prof. Vybihal on knowledge nodes \cite{vybihal-knowledge}.
+	
+	\section{Recent Progress}
+	
+	As planned in the previous progress report, a basic prototype of the KNN has been completed. Some changes were made to the specifications provided by Prof. Vybihal to improve performance.
+	
+	The main difficulty in creating the KNN layer is the logic of the various ways for it to ``think''. Indeed, according to research conducted by Prof. Vybihal \cite{vybihal-lambda}, the human brain has three main ways of thinking: forwards, backwards, and ``lambda''.
+	
+	Thinking forwards entails forward activation of knowledge nodes based on data received from the neural network stage. For example, if one sees a dog, they think of: hairy, barks, pet, etc. This type of thinking requires conscious effort. A basic version of this thinking was relatively easy to implement in Java code.
+	
+	Backwards thinking implies knowing the attributes of an item and deducing that that item is what is being observed. For instance, if one sees something that is hairy and barks, they can deduce that it was a dog. This entails however some level of confidence in the deduction being made, and is more complex to implement. This type of thinking typically occurs constantly in the background in people. A simple version of this thinking, without any confidence level, has been implemented in Java code.
+	
+	``Lambda'' thinking is essentially a combination of forwards and backwards thinking. In Prof. Vybihal's research, people tend to use this type of thinking most often in practice \cite{vybihal-knowledge}. It entails first using forward thinking to identify attributes of an item, and then working one's way backwards to verify that that item was indeed what was observed. This type of thinking is yet to implemented in Java code.
+	
+	Some aspects of the system are still unfinished, as the specifications for the KNN provided by Prof. Vybihal are not complete as of yet. Some features yet to implemented include the aging of the knowledge nodes and the confidence level when firing.
+	
+	Work has also begun on the final report and the presentation slides. At this point, the structure of the report has been planned out and some slides have been constructed for the final presentation.
+	
+	\section{Future Plans}
+	
+	The plans for next week are to finish up the remaining features of the KNN layer. Beyond that, the goal is to perform some basic integration tests between the Expert System (ES) and the Knowledge Node Network (KNN). After that, if time permits, it would be interesting to perform tests connecting the layers I have worked on with the other layers (Neural Network and Meta Reasoner).
+	
+	Since the end of the semester is approaching, it is also important to soon complete a draft of the presentation slides and the report. These should be finished by the end of the month.
+	
+	%\renewcommand\refname{}
+	\bibliographystyle{unsrt}
+	\bibliography{readings}{}
+	
+\end{document}

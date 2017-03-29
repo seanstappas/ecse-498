@@ -1,0 +1,31 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Neural Network}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Knowledge Node Network}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Expert System}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Meta Reasoner}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{Problem}{}% 7
+\BOOKMARK [2][-]{subsection.3.1}{Specifications}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Expert System}{subsection.3.1}% 9
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Knowledge Node Network}{subsection.3.1}% 10
+\BOOKMARK [1][-]{section.4}{Design}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Abstraction}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.2}{Speed}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.3}{Object Oriented Design}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.4}{Documentation}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.5}{Layer Design}{section.4}% 16
+\BOOKMARK [3][-]{subsubsection.4.5.1}{Expert System}{subsection.4.5}% 17
+\BOOKMARK [3][-]{subsubsection.4.5.2}{Knowledge Node Network}{subsection.4.5}% 18
+\BOOKMARK [1][-]{section.5}{Plan for Next Semester}{}% 19
+\BOOKMARK [2][-]{subsection.5.1}{Finalization of the Knowledge Node Network}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.2}{Finalization of the Expert System}{section.5}% 21
+\BOOKMARK [2][-]{subsection.5.3}{Integration}{section.5}% 22
+\BOOKMARK [2][-]{subsection.5.4}{Simulation Testing}{section.5}% 23
+\BOOKMARK [2][-]{subsection.5.5}{Physical Testing}{section.5}% 24
+\BOOKMARK [1][-]{section.6}{Impact on Society and the Environment}{}% 25
+\BOOKMARK [2][-]{subsection.6.1}{Use of Non-renewable Resources}{section.6}% 26
+\BOOKMARK [2][-]{subsection.6.2}{Environmental Benefits}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.3}{Safety and Risk}{section.6}% 28
+\BOOKMARK [2][-]{subsection.6.4}{Benefits to Society}{section.6}% 29
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 30
+\BOOKMARK [1][-]{section*.5}{References}{}% 31
