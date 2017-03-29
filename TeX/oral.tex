@@ -96,7 +96,8 @@
 		The Neural Network (NN) is a \textbf{signal classifier} and the first interface between the sensors and the rest of the system.
 		\begin{description}
 			\item[input] Signals from the robots' sensors (through an external API).
-			\item[output] Simple tuples of \code{(label, measurement)}.
+			\item[output] Tags to be used by the Knowledge Node Network.
+			%\item[output] Simple tuples of \code{(label, measurement)}.
 		\end{description}
 		\begin{figure}
 			\centering
@@ -122,7 +123,7 @@
 	
 		\begin{description}
 			\item[input] 
-				Tuples from the Neural Network. \linebreak
+				Tags from the Neural Network. \linebreak
 				Commands from the Meta Reasoner.
 			\item[output] Tags (facts, recommendations and rules).
 		\end{description}
@@ -266,9 +267,9 @@
 		\frametitle{Tags}
 		The entire system revolves around tags, which can be one of three types:
 		\begin{description}[Recommendation]
-			\item[Fact] Simple calculus predicate
-			\item[Rule] Logical combination of Tags, used by the Expert System
-			\item[Recommendation] Action to be performed
+			\item[Fact] Simple calculus predicate (essentially boolean expression). \emph{e.g.: $(A)$, $(A < 1)$, or $(A = 1)$.}
+			\item[Rule] Logical combination of Tags, used by the Expert System. \emph{e.g.: $(A)(B)\rightarrow(C)$.}
+			\item[Recommendation] Action to be performed. \emph{e.g.: (\#turn\_left).}
 		\end{description}
 		To follow object-oriented design, \textbf{Fact}, \textbf{Rule} and \textbf{Recommendation} classes were created, which all subclass an abstract \textbf{Tag} class.
 	\end{frame}
@@ -316,8 +317,8 @@
 		\begin{description}[\code{activeTagsMETA}]
 			\item[\code{mapKN}] Map of input Tags to associated Knowledge Nodes
 			\item[\code{activeTags}] Set of active Tags, corresponding to input Tags of fired Knowledge Nodes
-			\item[\code{activeTuplesNN}] Set of active tuples coming from the Neural Network layer.
-			\item[\code{activeTagsMETA}] Set of active Tags coming from the META layer. These are commands coming from higher up.
+			%\item[\code{activeTuplesNN}] Set of active tuples coming from the Neural Network layer.
+			%\item[\code{activeTagsMETA}] Set of active Tags coming from the META layer. These are commands coming from higher up.
 		\end{description}
 	\end{frame}
 
@@ -331,7 +332,7 @@
 		\end{itemize}
 		The KNN picks the correct way of thinking based on a command from META.
 		\begin{description}
-			\item[parameters:] A \textbf{number of cycles} can be passed as a parameter to an overloaded version of \code{think()}. This number of cycles represents the amount of \emph{effort} being put into thinking, running until energy-based quiescence \footfullcite{vybihal-knowledge} occurs. Otherwise, think() takes no parameters and runs to natural quiescence.
+			\item[parameters:] A \textbf{number of cycles} can be passed as a parameter to an overloaded version of \code{think()}. This number of cycles represents the amount of \emph{effort} being put into thinking, running until energy-based quiescence \footfullcite{vybihal-knowledge} occurs. Otherwise, \code{think()} takes no parameters and runs to natural quiescence.
 			\item[returns:] The Set of Tags activated as a result of thinking.
 		\end{description}
 	\end{frame}
@@ -539,7 +540,7 @@
 		\frametitle{Expert System Finalization}
 		Some features of the Expert System are still to be implemented:
 		\begin{itemize}
-			\item Fact token matching (?\quad \textless \quad \textgreater)
+			\item Fact token matching (=\quad \textless \quad \textgreater)
 		\end{itemize}
 	\end{frame}
 
