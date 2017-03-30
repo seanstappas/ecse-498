@@ -150,20 +150,17 @@
 			\item[input] Tags from the Knowledge Node Network.
 			\item[output] Recommendations for actions to take (such as ``turn left'').
 		\end{description}
-	\end{frame}
-
-	\begin{frame}
-		\frametitle{Simple Expert System}
 		\begin{table}
-			\begin{tabular}{c | c | c | c} 
-				\textbf{Facts} & \textbf{Ready Rules} & \textbf{Activated Rules} & \textbf{Fired Tags} \\ \hline
-				$(A),(B)$ & \specialcell{$(A)(B) \rightarrow (D)$ \\ $(D)(B) \rightarrow (E)$ \\ $(D)(E) \rightarrow (F)$} & & \\ \hline
-				$(A),(B)$ & \specialcell{$(D)(B) \rightarrow (E)$ \\ $(D)(E) \rightarrow (F)$} & $(A)(B) \rightarrow (D)$  & $(D)$ \\ \hline
-				$(A),(B),(D)$ & \specialcell{$(D)(E) \rightarrow (F)$} & \specialcell{$(A)(B) \rightarrow (D)$ \\ $(D)(B) \rightarrow (E)$} & $(E)$ \\ \hline
-				$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
-			\end{tabular}
-			\caption{Example of cascading in a simple expert system \footfullcite{vybihal-expert}}
-		\end{table}
+		\small
+		\begin{tabular}{c | c | c | c} 
+			\textbf{Facts} & \textbf{Ready Rules} & \textbf{Activated Rules} & \textbf{Fired Tags} \\ \hline
+			$(A),(B)$ & \specialcell{$(A)(B) \rightarrow (D)$ \\ $(D)(B) \rightarrow (E)$ \\ $(D)(E) \rightarrow (F)$} & & \\ \hline
+			$(A),(B)$ & \specialcell{$(D)(B) \rightarrow (E)$ \\ $(D)(E) \rightarrow (F)$} & $(A)(B) \rightarrow (D)$  & $(D)$ \\ \hline
+			$(A),(B),(D)$ & \specialcell{$(D)(E) \rightarrow (F)$} & \specialcell{$(A)(B) \rightarrow (D)$ \\ $(D)(B) \rightarrow (E)$} & $(E)$ \\ \hline
+			$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$
+		\end{tabular}
+		\caption{Example of cascading in a simple expert system \footfullcite{vybihal-expert}}
+	\end{table}
 	\end{frame}
 
 	\begin{frame}
@@ -259,7 +256,7 @@
 						\item Polymorphism
 					\end{itemize}
 			\item Efficiency (space \& time)
-			\item Documentation (Javadoc) \url{http://cs.mcgill.ca/~sstapp/prometheus/index.html}
+			\item Documentation (Javadoc \& UML) \url{http://cs.mcgill.ca/~sstapp/prometheus/index.html}
 		\end{itemize}
 	\end{frame}
 
@@ -431,7 +428,7 @@
 		\end{itemize}
 	
 		\begin{description}
-			\item[parameters:] A number of cycles can be passed, similarly to the KNN. Otherwise, think() takes no parameters and runs to natural quiescence.
+			\item[parameters:] A number of cycles can be passed, similarly to the KNN. Otherwise, \code{think()} takes no parameters and runs to natural quiescence.
 			\item[returns:] The Set of \textbf{Recommendations} activated as a result of thinking. These Recommendations are passed on to the META layer.
 		\end{description}
 		
@@ -525,8 +522,9 @@
 	\subsection{Finalization}
 	
 	\begin{frame}
-		\frametitle{Knowledge Node Network Finalization}
-		Some more complex features of the KNN are still to be implemented:
+		\frametitle{Finalization}
+		\framesubtitle{First month}
+		Features of the \textbf{Knowledge Node Network} yet to be implemented:
 		\begin{itemize}
 			\item Lambda thinking
 			\item Confidence and strength
@@ -534,11 +532,7 @@
 			\item Timestamp aging
 			\item Interface with Neural Network
 		\end{itemize}
-	\end{frame}
-	
-	\begin{frame}
-		\frametitle{Expert System Finalization}
-		Some features of the Expert System are still to be implemented:
+		Features of the \textbf{Expert System} yet to be implemented:
 		\begin{itemize}
 			\item Fact token matching (=\quad \textless \quad \textgreater)
 		\end{itemize}
@@ -548,6 +542,7 @@
 	
 	\begin{frame}
 		\frametitle{Integration}
+		\framesubtitle{Second month}
 		The ES and KNN layers will have to be merged with the NN and META, which will probably lead to some conflicts. Time will be required to ensure proper functionality.
 	\end{frame}
 
@@ -555,10 +550,11 @@
 	
 	\begin{frame}
 		\frametitle{Simulation}
+		\framesubtitle{Third month}
 		The Java simulation library Simbad will be used to test the entire system on virtual robots.
 		\begin{figure}
 			\centering
-			\includegraphics[width=0.5\textwidth]{figures/simbad.png}
+			\includegraphics[width=0.4\textwidth]{figures/simbad.png}
 			\caption
 			{Simbad Java simulator. \footfullcite{simbad}}
 			\label{fig:simbad}
@@ -567,10 +563,11 @@
 
 	\begin{frame}
 		\frametitle{Physical Testing}
+		\framesubtitle{Third month}
 		Prof. Vybihal's lab has multiple simple robots with ultrasonic sensors that can be tested on.
 		\begin{figure}
 			\centering
-			\includegraphics[width=0.5\textwidth]{figures/robot.jpg}
+			\includegraphics[width=0.4\textwidth]{figures/robot.jpg}
 			\caption
 			{Robot in the lab.}
 			\label{fig:robot}
