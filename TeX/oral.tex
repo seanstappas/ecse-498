@@ -264,9 +264,12 @@
 		\frametitle{Tags}
 		The entire system revolves around tags, which can be one of three types:
 		\begin{description}[Recommendation]
-			\item[Fact] Simple calculus predicate (essentially boolean expression). \emph{e.g.: $(A)$, $(A < 1)$, or $(A = 1)$.}
-			\item[Rule] Logical combination of Tags, used by the Expert System. \emph{e.g.: $(A)(B)\rightarrow(C)$.}
-			\item[Recommendation] Action to be performed. \emph{e.g.: (\#turn\_left).}
+			\item[Fact] Simple calculus predicate (essentially boolean expression). \\
+						\emph{e.g.: $(A)$, $(A < 1)$, or $(A = 1)$.}
+			\item[Rule] Logical combination of Tags, used by the Expert System. \\
+						\emph{e.g.: $(A)(B)\rightarrow(C)$.}
+			\item[Recommendation] Action to be performed. \\
+								  \emph{e.g.: (\#turn\_left).}
 		\end{description}
 		To follow object-oriented design, \textbf{Fact}, \textbf{Rule} and \textbf{Recommendation} classes were created, which all subclass an abstract \textbf{Tag} class.
 	\end{frame}
