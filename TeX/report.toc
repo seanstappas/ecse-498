@@ -9,13 +9,20 @@
 \contentsline {subsubsection}{\numberline {3.1.1}Expert System}{3}{subsubsection.3.1.1}
 \contentsline {subsubsection}{\numberline {3.1.2}Knowledge Node Network}{4}{subsubsection.3.1.2}
 \contentsline {section}{\numberline {4}Design}{4}{section.4}
-\contentsline {subsection}{\numberline {4.1}Abstraction}{4}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Speed}{4}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Object Oriented Design}{4}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Documentation}{4}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Layer Design}{4}{subsection.4.5}
-\contentsline {subsubsection}{\numberline {4.5.1}Expert System}{4}{subsubsection.4.5.1}
-\contentsline {subsubsection}{\numberline {4.5.2}Knowledge Node Network}{5}{subsubsection.4.5.2}
+\contentsline {subsection}{\numberline {4.1}Efficiency}{4}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Space}{4}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.2}Time}{4}{subsubsection.4.1.2}
+\contentsline {subsection}{\numberline {4.2}Object Oriented Design}{4}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Abstraction}{4}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Encapsulation}{4}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}Polymorphism}{4}{subsubsection.4.2.3}
+\contentsline {subsubsection}{\numberline {4.2.4}Inheritance}{4}{subsubsection.4.2.4}
+\contentsline {subsection}{\numberline {4.3}Documentation}{4}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Javadoc}{4}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}UML}{4}{subsubsection.4.3.2}
+\contentsline {subsection}{\numberline {4.4}Layer Design}{5}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Expert System}{5}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Knowledge Node Network}{5}{subsubsection.4.4.2}
 \contentsline {section}{\numberline {5}Plan for Next Semester}{5}{section.5}
 \contentsline {subsection}{\numberline {5.1}Finalization of the Knowledge Node Network}{5}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}Finalization of the Expert System}{5}{subsection.5.2}
@@ -28,4 +35,4 @@
 \contentsline {subsection}{\numberline {6.3}Safety and Risk}{5}{subsection.6.3}
 \contentsline {subsection}{\numberline {6.4}Benefits to Society}{5}{subsection.6.4}
 \contentsline {section}{\numberline {7}Conclusion}{5}{section.7}
-\contentsline {section}{References}{6}{section*.5}
+\contentsline {section}{References}{7}{section*.5}

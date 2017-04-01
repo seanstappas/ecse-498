@@ -137,23 +137,37 @@ The Knowledge Node Network consists of a mapping of input tags to their associat
 \section{Design}
 % In this section you must describe any design work that was already completed. Discuss any design decisions that have been made, and describe the process that was followed to make these decisions. Also discuss any results that have already been obtained this semester.
 
-\subsection{Abstraction}
+\subsection{Efficiency}
+
+\subsubsection{Space}
+
+A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimulus in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java Sets for most of the collections in the ES and KNN layers. The original specifications mentioned using ArrayLists, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to Sets.
+
+\subsubsection{Time}
+
+\subsection{Object Oriented Design}
+
+\subsubsection{Abstraction}
 
 One important design aspect is that the system should be as abstract as possible, while still performing its desired task. For instance, the system should be general enough to perform under simulations, as well as in real-life environments. It should also ideally be able to perform in vastly different environments, with different tasks.
 
 One example of making use of abstraction is the choice to create an interface for both the ES and KNN, since they share some functionality, like the ability to think.
 
-\subsection{Speed}
+\subsubsection{Encapsulation}
 
-A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimulus in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java Sets for most of the collections in the ES and KNN layers. The original specifications mentioned using ArrayLists, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to Sets.
+\subsubsection{Polymorphism}
 
-\subsection{Object Oriented Design}
+\subsubsection{Inheritance}
 
 Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, all the structures described in \autoref{sec:background} will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
 
 For example, the ``tags'' described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java String, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a Fact, a Recommendation, or a Rule. If implemented as Strings, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. For this reason, the tags are instead implemented using a Tag Java class, with Recommendation, Fact, and Rule subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
 
 \subsection{Documentation}
+
+\subsubsection{Javadoc}
+
+\subsubsection{UML}
 
 Proper documentation of the source code is very important, to ensure that anyone wanting to work with the code which was designed has an easy time doing so. This is achieved through extensive Javadoc of the entire code base.
 
