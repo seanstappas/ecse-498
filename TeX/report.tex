@@ -52,6 +52,7 @@
 % Custom commands
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
 
 \title{\textbf{\uppercase{Prometheus AI Phase 1}}}
 \author{
@@ -92,9 +93,9 @@ Sean Stappas \\
 \section{Introduction} \label{sec:intro}
 % In this section you should introduce (at a high level) the overall theme of the project, and state clearly what are the goals you are trying to achieve.  This section should also clearly convey why this project is important, what is the potential impact (applications, etc).
 
-The goal of this project is to create an AI model of the human brain to coordinate and control multiple robots. Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones.
+The goal of this project is to create an artificial intelligence system to control multiple robots. Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones.
 
-The design of this model consists of four main layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). These will be described in \autoref{sec:background}.
+The structure of the system is inspired from the functionality of the human brain, and is composed of the following four layers (in order of increasing abstraction): the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). These will be described in \autoref{sec:background}.
 
 \section{Background} \label{sec:background}
 % In this section you should summarize the theory and background that you had to learn, and that you believe are necessary for the reader to understand the rest of the report.
@@ -145,6 +146,8 @@ A very important consideration when designing the system is speed. Since the rob
 
 \subsubsection{Time}
 
+When designing every algorithm in the system, the first criterion in mind is speed. Indeed, for the \code{think()} methods of the ES and KNN, it was important to think about the right way to leverage all the available data structures to maximize speed.
+
 \subsection{Object Oriented Design}
 
 \subsubsection{Abstraction}
@@ -155,7 +158,11 @@ One example of making use of abstraction is the choice to create an interface fo
 
 \subsubsection{Encapsulation}
 
+Each layer of the system has unique, localized functionality that does not need to be visible from the rest of the system. For instance, the intricacies of the \code{think()} method in the ES and KNN layers do not need to be known to the rest of the system.
+
 \subsubsection{Polymorphism}
+
+Many methods in the system can have different functionality depending on context. For instance, the \code{think()} method in the KNN and ES layers can take an optional number of think cycles to specify a threshold for quiescence.
 
 \subsubsection{Inheritance}
 
@@ -165,11 +172,15 @@ For example, the ``tags'' described in \autoref{sec:background} need to be as ge
 
 \subsection{Documentation}
 
+Proper documentation of the source code is very important. This is to ensure that anyone wanting to work with the code which was designed has an easy time doing so. Also, for anyone wanting to understand how the system works, documentation is essential. This documentation was achieved through Javadoc and UML diagrams.
+
 \subsubsection{Javadoc}
+
+Extensive Javadoc was generated for the entire code base. This can be found here: \url{http://cs.mcgill.ca/~sstapp/prometheus/index.html}.
 
 \subsubsection{UML}
 
-Proper documentation of the source code is very important, to ensure that anyone wanting to work with the code which was designed has an easy time doing so. This is achieved through extensive Javadoc of the entire code base.
+UML diagrams of every package in the code base were created.
 
 \subsection{Layer Design}
 
@@ -189,19 +200,27 @@ The Knowledge Node Network layer is based around the KnowledgeNodeNetwork Java c
 
 The plan for next semester is to finalize the two layers that were started this semester, and to test them on the robots available in Prof. Vybihal's lab.
 
-\subsection{Finalization of the Knowledge Node Network}
+\subsection{Finalization}
 
-\subsection{Finalization of the Expert System}
+\subsubsection{Knowledge Node Network}
+
+Many complex features of the KNN layer are still to be implemented, such as backwards and lambda thinking, confidence, aging...
+
+\subsubsection{Expert System}
+
+Some features of the ES layer are still to be implemented, such as more complex Fact checking.
 
 \subsection{Integration}
 
 One very important task left to be done is to integrate the two layers described in this report (ES and KNN) with the other layers developed separately (NN and META). Ideally, the layers should be able to work together, but there will surely be some conflicts at the interface of the layers. These will have to be resolved when the time comes.
 
-\subsection{Simulation Testing}
+\subsection{Testing}
+
+\subsubsection{Simulation}
 
 Once all the layers are functioning together, they can be tested. The first and easiest way to test would be in a simulated environment. One simulator that may be used is Simbad, which is a Java 3D robot simulator \cite{simbad}. This can allow for some early debugging and fixes.
 
-\subsection{Physical Testing}
+\subsubsection{Physical}
 
 One the simulation testing is completed and working properly, the system can be tested in the lab. Prof. Vybihal's lab has multiple robots with ultrasonic sensors, and these will be the test subjects of this phase.
 
