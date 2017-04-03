@@ -95,7 +95,13 @@ Sean Stappas \\
 
 The goal of this project is to create an artificial intelligence system to control multiple robots. Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones.
 
-The structure of the system is inspired from the functionality of the human brain, and is composed of the following four layers (in order of increasing abstraction): the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). These will be described in \autoref{sec:background}.
+The structure of the system is inspired from the functionality of the human brain, and is composed of the following four layers (in order of increasing abstraction): the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META), as can be seen in \autoref{model}. These will be described in \autoref{sec:background}.
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figures/ai_model.pdf}
+	\caption{Prometheus AI model.}
+	\label{model}
+\end{figure}
 
 \section{Background} \label{sec:background}
 % In this section you should summarize the theory and background that you had to learn, and that you believe are necessary for the reader to understand the rest of the report.
@@ -106,7 +112,31 @@ The NN layer consists of a network of neurons with a similar structure to neuron
 
 \subsection{Knowledge Node Network}
 
-The KNN layer represents memory in the human brain. It takes in the tags provided by the NN and outputs tags based on its knowledge of the environment. These output tags can be simple facts, such as ``I see a wall'', or can be recommendations for future actions such ``Turn left''. These tags are passed on to the next layer, the Expert System (ES).
+The KNN layer represents memory in the human brain. It takes in the tags provided by the NN and outputs tags based on its knowledge of the environment. These output tags can be simple facts, such as ``I see a wall'', or can be recommendations for future actions such ``turn left''. These tags are passed on to the next layer, the Expert System (ES).
+
+The KNN has three main ways of thinking: forwards, backwards, and lambda. Forwards thinking is the simplest, and can be seen in \autoref{think_forwards}.
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figures/forwards_thinking.pdf}
+	\caption{Thinking forwards in the KNN.}
+	\label{think_forwards}
+\end{figure}
+
+Thinking backwards starts at the output tags of Knowledge Nodes, and works backwards, as seen in \autoref{think_backwards}.
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figures/backwards_thinking.pdf}
+	\caption{Thinking backwards in the KNN.}
+	\label{think_backwards}
+\end{figure}
+
+Lambda thinking uses a combination of forwards and backwards, and can be seen in \autoref{think_lambda}.
+
+\begin{figure}[!htb]
+\includegraphics[width=\columnwidth]{figures/lambda_thinking.pdf}
+\caption{Lambda thinking in the KNN.}
+\label{think_lambda}
+\end{figure}
 
 \subsection{Expert System}
 
@@ -114,7 +144,7 @@ The ES layer is a decision maker based on pure facts. It is not aware of its cur
 
 \subsection{Meta Reasoner}
 
-The META layer represents high-level reasoning in human brains. It is aware of its environment and context, and makes decisions based on what it believes to be right. It is paranoid, and constantly checks whether the tags reported by the rest of the AI system make sense based on its expected view of the world. Once it makes a decision, it sends a command to the actuators of the robots to decide how to move.
+The META layer represents high-level reasoning in human brains. It is aware of its environment and context, and makes decisions based on what it believes to be right. It is paranoid, and constantly checks whether the tags reported by the rest of the AI system make sense based on its expected view of the world. If it decides to make a decision, it sends a command to the actuators of the robots to decide how to move. If it is not happy with the recommendation(s) from the ES, it may initiate another think cycle in the KNN to generate new recommendations(s).
 
 \section{Problem}
 % In this section you should describe the problem or system you are addressing in detail. Describe the project requirements and constraints.
