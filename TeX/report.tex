@@ -123,32 +123,22 @@ The assigned task was to construct two out of the four layers listed in \autoref
 
 As a deliverable for the end of this first semester, it was required to complete a prototype of these two layers, with basic versions of the functionality described in \autoref{sec:background}. This was to be done entirely in Java.
 
-\subsection{Specifications}
-
-The initial specifications provided by Prof. Vybihal on the Expert System and Knowledge Node Network will now be described.
-
-\subsubsection{Expert System}
-
-According to specifications by Prof. Vybihal \cite{vybihal-model}, the Expert System layer consists of a list of facts, a list of recommendations, and a list of rules.
-
-\subsubsection{Knowledge Node Network}
-
-The Knowledge Node Network consists of a mapping of input tags to their associated knowledge nodes, as well as tags that are known to be active, either from the Neural Network layer, or the KNN layer itself.
-
 \section{Design}
 % In this section you must describe any design work that was already completed. Discuss any design decisions that have been made, and describe the process that was followed to make these decisions. Also discuss any results that have already been obtained this semester.
 
-\subsection{Efficiency}
 
-\subsubsection{Space}
+
+\subsection{Efficiency (Space \& Time)}
 
 A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimulus in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java Sets for most of the collections in the ES and KNN layers. The original specifications mentioned using ArrayLists, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to Sets.
-
-\subsubsection{Time}
 
 When designing every algorithm in the system, the first criterion in mind is speed. Indeed, for the \code{think()} methods of the ES and KNN, it was important to think about the right way to leverage all the available data structures to maximize speed.
 
 \subsection{Object Oriented Design}
+
+Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, all the structures described in \autoref{sec:background} will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
+
+For example, the ``tags'' described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java String, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a Fact, a Recommendation, or a Rule. If implemented as Strings, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. For this reason, the tags are instead implemented using a Tag Java class, with Recommendation, Fact, and Rule subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
 
 \subsubsection{Abstraction}
 
@@ -166,9 +156,27 @@ Many methods in the system can have different functionality depending on context
 
 \subsubsection{Inheritance}
 
-Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, all the structures described in \autoref{sec:background} will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
+\subsection{Implementation}
 
-For example, the ``tags'' described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java String, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a Fact, a Recommendation, or a Rule. If implemented as Strings, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. For this reason, the tags are instead implemented using a Tag Java class, with Recommendation, Fact, and Rule subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
+The details of the specific design choices for the Expert System and Knowledge Node Network will now be discussed.
+
+\subsubsection{Expert System}
+
+The Expert System layer is based around the \code{ExpertSystem} Java class.
+
+\subsubsection{Knowledge Node Network}
+
+The Knowledge Node Network layer is based around the \code{KnowledgeNodeNetwork} Java class.
+
+\subsection{Testing}
+
+\subsubsection{Unit Tests}
+
+Unit tests were generated for the KNN and ES.
+
+\subsubsection{Integration Tests}
+
+Integration tests were made to test the combined functionality of the KNN and ES.
 
 \subsection{Documentation}
 
@@ -181,18 +189,6 @@ Extensive Javadoc was generated for the entire code base. This can be found here
 \subsubsection{UML}
 
 UML diagrams of every package in the code base were created.
-
-\subsection{Layer Design}
-
-The details of the specific design choices for the Expert System and Knowledge Node Network will now be discussed.
-
-\subsubsection{Expert System}
-
-The Expert System layer is based around the ExpertSystem Java class.
-
-\subsubsection{Knowledge Node Network}
-
-The Knowledge Node Network layer is based around the KnowledgeNodeNetwork Java class.
 
 \section{Plan for Next Semester}
 % In this section you should describe a plan for next semester. What tasks remain to be done, and what is the timeline for accomplishing these tasks? Furthermore you can describe how you plan to test your design in order to make sure it meets the desired specifications. Also outline the design decisions that are required in order to make sure that the final product can be tested.
@@ -244,6 +240,8 @@ The system could be used as a tool to control robots in dangerous environments s
 It is critical that, once this system is completed, it is used in an ethical way, and for the right purposes.
 
 One example of use that may cause ethical concern is in a military setting, where an AI system like the one described here could be used in a battlefield in place of soldiers.
+
+In the very long term, there are concerns with the possibility that an AI system might achieve intelligence and awareness close to a human. If such an AI were to obtain ``consciousness'' in its own way, should that entity be entitled to its own rights, like humans do?
 
 \subsection{Benefits to Society}
 % Quality of life, economic benefits, etc.
