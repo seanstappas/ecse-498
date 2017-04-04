@@ -21,8 +21,14 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{vybihal-model}
-J.~Vybihal, ``Full {AI} model,'' 2016.
+\bibitem{vybihal-perceptron}
+J.~Vybihal, ``Perceptron learning,'' 2016.
+
+\bibitem{vybihal-knowledge}
+------, ``Knowledge nodes,'' 2017.
+
+\bibitem{vybihal-lambda}
+J.~Vybihal and T.~R. Shultz, ``Search in analogical reasoning,'' 1990.
 
 \bibitem{simbad}
 ``Simbad 3d robot simulator,'' \url{http://simbad.sourceforge.net/index.php},
