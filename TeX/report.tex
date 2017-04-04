@@ -163,7 +163,24 @@ Lambda thinking uses a combination of forwards and backwards, and can be seen in
 
 \subsection{Expert System}
 
-The ES layer is a basic logic reasoner. It is not aware of its current reality, or any context. It simply has a list of known Facts, in the form of tags, and outputs tags based on known relationships, called Rules. These output tags are passed on to the final layer, the Meta Reasoner (META).
+The ES layer is a basic logic reasoner. It is not aware of its current reality, or any context. It takes in the tags provided by the KNN and interprets them as either facts, recommendations or rules.
+
+Facts are simple calculus predicates showing that something is true. For example, the fact $(A)$ represents that $A$ itself is true or observed, $(A = 1)$ means that $A$ is equal to 1, $(A > 1)$ represents that $A$ is greater than 1, etc. As a more concrete example, a fact can represent a certain measurement, like $(distance = 5)$ representing the robot's distance from a wall as measured by one of its sensors.
+
+Recommendations represent suggestions for actions to be taken by a robot. For example, $(\#turn\_left)$ is a recommendation for a robot to turn left, if it sees a wall directly in front of it and must avoid it, for example. These are recommendations and not commands because the META can decide whether or not to actually take that action.
+
+Rules are a many-to-many structure with Facts or Recommendations as inputs and outputs. The output tags only become true when all the input tags are true. In this way, a rule represent a logical AND of all its input tags.
+
+The runtime of the ES consists of the following general steps \cite{vybihal-expert}:
+
+\begin{enumerate}
+	\item Reset
+	\item Add facts and rules
+	\item Think
+	\item Send recommendations to META
+\end{enumerate}
+
+These recommendations are passed on to the final layer, the Meta Reasoner (META).
 
 \subsection{Meta Reasoner}
 
