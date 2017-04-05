@@ -59,12 +59,20 @@
 \newcommand{\specialcell}[2][c]{%
 	\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
 
-\title{\textbf{\uppercase{Prometheus AI Phase 1}}}
+\title
+{
+	\uppercase{Prometheus AI} \\
+	\large Phase 1
+}
 \author % (optional, for multiple authors)
-{Sean Stappas
-	\\ 260639512
-	\\ ECSE-498: Honours Thesis I
-	\\{\small Supervised by: Prof. Joseph Vybihal}}
+{
+	Sean Stappas \\ 
+	260639512 \\
+	\\ 
+	ECSE-498: Honours Thesis I \\
+	\\
+	\small Supervised by: Prof. Joseph Vybihal
+}
 \date{April 11, 2017}
 
 \begin{document}
@@ -75,10 +83,11 @@
 
 \section*{Abstract}
 % The abstract is an executive summary of your project/thesis. It should provide an overview of your project/thesis by addressing the following questions. a. What is the motivation for the project/thesis? b. What are the goals of the project/thesis? c. What was achieved this semester? d. What methods were used to make those achievements? The abstract should be between 200 and 250 words long.
-Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in dangerous environments such as after a disaster at a nuclear plant, or in outer space. The model consists of four layers: the Neural Network, the Knowledge Node Network, and the Meta Reasoner. The Neural Network classifies the signals coming from the robots' sensors and sends formatted tags to the Knowledge Node Network. The Knowledge Node Network represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the Expert System. The Expert System is a simple logic reasoner and provides a recommendation for an action to the Meta Reasoner. The Meta Reasoner represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the Knowledge Node Network and Expert System layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. The design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
+Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides a recommendation for an action to the Meta Reasoner. The META represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc \footnote{The Javadoc can be found here: \url{http://cs.mcgill.ca/~sstapp/prometheus/index.html}.}.
 
-%\section*{Acknowledgments}
+\section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
+Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in parallel with my work. She also doing this project as part of an Honours Thesis. We have had many discussions on the design of the system and how our components should fit together.
 
 \clearpage
 \tableofcontents
@@ -169,7 +178,7 @@ Facts are simple calculus predicates showing that something is true. For example
 
 Recommendations represent suggestions for actions to be taken by a robot. For example, $(\#turn\_left)$ is a recommendation for a robot to turn left, if it sees a wall directly in front of it and must avoid it, for example. These are recommendations and not commands because the META can decide whether or not to actually take that action.
 
-Rules are a many-to-many structure with Facts or Recommendations as inputs and outputs. The output tags only become true when all the input tags are true. In this way, a rule represent a logical AND of all its input tags.
+Rules are a many-to-many structure with facts or recommendations as inputs and outputs. The output tags only become true when all the input tags are true. In this way, a rule represent a logical AND of all its input tags.
 
 The runtime of the ES consists of the following general steps \cite{vybihal-expert}:
 
@@ -214,15 +223,13 @@ When designing every algorithm in the system, the first criterion in mind is spe
 
 \subsection{Object Oriented Design}
 
-Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, all the structures described in \autoref{sec:background} will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
-
-For example, the ``tags'' described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java String, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a Fact, a Recommendation, or a Rule. If implemented as Strings, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. For this reason, the tags are instead implemented using a Tag Java class, with Recommendation, Fact, and Rule subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
+Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, the ES and KNN will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
 
 \subsubsection{Abstraction}
 
 One important design aspect is that the system should be as abstract as possible, while still performing its desired task. For instance, the system should be general enough to perform under simulations, as well as in real-life environments. It should also ideally be able to perform in vastly different environments, with different tasks.
 
-One example of making use of abstraction is the choice to create an interface for both the ES and KNN, since they share some functionality, like the ability to think.
+One example of making use of abstraction is the choice to create a \code{PrometheusLayer} interface for both the ES and KNN, since they share some functionality, like the ability to think.
 
 \subsubsection{Encapsulation}
 
@@ -232,7 +239,7 @@ Each layer of the system has unique, localized functionality that does not need 
 
 Many methods in the system can have different functionality depending on context. For instance, the \code{think()} method in the KNN and ES layers can take an optional number of think cycles to specify a threshold for quiescence.
 
-\subsubsection{Inheritance}
+%\subsubsection{Inheritance}
 
 \subsection{Implementation in Java}
 
@@ -240,7 +247,12 @@ The details of the specific design choices for the tags, ES and KNN will now be 
 
 \subsubsection{Tags}
 
+
 The entire system revolves around tags passed from layer to layer. For this reason, a lot of thought was put into the proper design of these tags. To leverage OOP principles and readability, it was decided to implement these tags with a \code{Tag} class in Java, with \code{Fact}, \code{Rule} and \code{Recommendation} subclasses.
+
+The tags described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java \code{String}, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a fact, a recommendation, or a rule. If implemented as \code{String}s, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. For this reason, the tags are instead implemented using a \code{Tag} Java class, with \code{Recommendation}, \code{Fact}, and \code{Rule} subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
+
+The \code{Tag} class itself was made abstract. This means that an object may not be directly instantiated as a \code{Tag}, but must be instantiated as one of its subclasses. This makes sense, since a tag \emph{must} be one of the three types: rule, recommendation or fact.
 
 All of these classes were placed inside the \code{tags} package. A UML diagram of the \code{tags} package can be seen in \autoref{uml_tags} of the Appendix.
 
