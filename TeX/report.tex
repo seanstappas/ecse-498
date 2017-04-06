@@ -94,7 +94,7 @@ Prometheus AI is a model of the human brain with the goal of controlling multipl
 
 \section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
-Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in parallel with my work. She also doing this project as part of an Honours Thesis. We have had many discussions on the design of the system and how our components should fit together.
+Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in parallel with the work done in this report. She is also doing this project as part of an Honours Thesis. Many discussions were had together on the design of the system and how our components should fit together.
 
 \clearpage
 \tableofcontents
@@ -276,7 +276,7 @@ Many methods in the system can have different functionality depending on context
 
 \subsubsection{Inheritance}
 
-Careful thought was put into how objects may inherit functionality from each other. This can most clearly be seen with the implementation of the tags, which will we described in \autoref{sec:implementation}.
+Careful thought was put into how objects may inherit functionality from each other. This can most clearly be seen with the implementation of the tags, which will be described in \autoref{sec:implementation}.
 
 \section{Implementation}
 \label{sec:implementation}
@@ -401,7 +401,7 @@ label=lst:think
 	\espath
 }
 
-There is also an overloaded version of \code{think()} that functions similarly to that of the \code{KnowledgeNodeNetwork}. This can be seen in \autoref{lst:thinkThreshold}
+There is also an overloaded version of \code{think()} that functions similarly to that of the \code{KnowledgeNodeNetwork}. This can be seen in \autoref{lst:thinkThreshold}. Both variants of \code{think()} return the \code{Set} of \code{Recommendations} that become active as a result of thinking, which is passed on to the META.
 
 \lstinputlisting[
 firstline=178,
@@ -412,18 +412,16 @@ label=lst:thinkThreshold
 	\espath
 }
 
-Both versions of \code{think()} call a method named \code{thinkCycle()} representing a single cycle of thinking. The code for this method can be seen in \autoref{lst:thinkCycle}
+Both versions of \code{think()} call a method named \code{thinkCycle()} representing a single cycle of thinking. The code for this method can be seen in \autoref{lst:thinkCycle}. This is the method where \code{Rules} and \code{Recommendations} can become active within the ES.
 
 \lstinputlisting[
 firstline=202,
-lastline=229,
+lastline=228,
 caption=A single cycle of thinking in the ES.,
 label=lst:thinkCycle
 ]{
 	\espath
 }
-
-% TODO: fix size of code
 
 \subsection{Testing}
 
@@ -437,16 +435,16 @@ Unit tests were generated for the KNN and ES to test every single method on its 
 
 Integration tests were made to test the combined functionality of the KNN and ES.
 
-The test setup for the \code{testKNN()} method can be seen in \autoref{testKNN}.
+The test setup for the \code{testKNN()} method can be seen in \autoref{testKNN}. Every node has a \code{threshold} value of 1 to simplify the activation. The system starts out with $A$ as the only active \code{Tag}, and \code{testKNN()} with \code{think()} until quiescence. It is therefore expect all the \code{Tags} shown in \autoref{testKNN} to become active at the end. The initial and final states are both asserted with TestNG in \code{testKNN()}, with positive results.
 
 \begin{figure*}[!htb]
 	\includegraphics[width=\textwidth]{figures/testKNN.pdf}
 	\caption[Setup for the \code{testKNN()} method.]
-	{Setup for the \code{testKNN()} method. Every node has a \code{threshold} value of 1 to simplify the activation.}
+	{Initial setup for the \code{testKNN()} method.}
 	\label{testKNN}
 \end{figure*}
 
-The test setup for the \code{testES()} method can be seen in \autoref{testES}.
+The test setup for the \code{testES()} method can be seen in \autoref{testES}. The columns from left to right correspond to the elements in the \code{readyRules}, the \code{activeRules}, the \code{facts}, and the \code{recommendations} respectively. The first row corresponds to the initial setup of the ES, and the last row corresponds to the expended final state. Both the initial and final states are asserted with TestNG in \code{testES()}, with positive results.
 
 \begin{table*}[!htb]
 	\large
@@ -462,18 +460,21 @@ The test setup for the \code{testES()} method can be seen in \autoref{testES}.
 	\label{testES}
 \end{table*}
 
-The \code{testKNNandES()} method has the same setup as \code{testKNN()} in \autoref{testKNN}, except the output active Tags are passed on to the ES. The resulting setup and activation can be seen in \autoref{testKNNandES}.
+The \code{testKNNandES()} method has the same setup as \code{testKNN()} in \autoref{testKNN}, except the output active Tags from the KNN are passed on to the ES. The resulting setup and activation in the ES can be seen in \autoref{testKNNandES}.
 
 \begin{table*}[!htb]
 	\large
 	\centering
-	\begin{tabular}{c | c | c | c} 
-		\textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
-		$(H)(I)(J)\rightarrow(\#Z)$
+	\begin{tabular}{c | c | c | c | c} 
+		\textbf{Cycle} & \textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
+		1
+		&$(H)(I)(J)\rightarrow(\#Z)$
 		& 
 		& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
 		& \\ \hline
 		
+		2
+		&
 		& $(H)(I)(J)\rightarrow(\#Z)$
 		& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
 		& $(\#Z)$
