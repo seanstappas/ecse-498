@@ -1,12 +1,12 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Prometheus AI model.\relax }}{5}{figure.caption.7}
-\contentsline {figure}{\numberline {2}{\ignorespaces High-level model of the perceptron of the NN.}}{5}{figure.caption.8}
-\contentsline {figure}{\numberline {3}{\ignorespaces High-level model of the Knowledge Node of the KNN.}}{5}{figure.caption.9}
-\contentsline {figure}{\numberline {4}{\ignorespaces Thinking forwards in the KNN.\relax }}{6}{figure.caption.10}
-\contentsline {figure}{\numberline {5}{\ignorespaces Thinking backwards in the KNN.\relax }}{6}{figure.caption.11}
-\contentsline {figure}{\numberline {6}{\ignorespaces Lambda thinking in the KNN.\relax }}{7}{figure.caption.12}
-\contentsline {figure}{\numberline {7}{\ignorespaces Prometheus AI model with labeled input and output.\relax }}{8}{figure.caption.13}
-\contentsline {figure}{\numberline {8}{\ignorespaces Setup for the \texttt {testKNN()} method.}}{12}{figure.caption.14}
-\contentsline {figure}{\numberline {9}{\ignorespaces UML diagram of the \texttt {tags} package.\relax }}{14}{figure.caption.17}
-\contentsline {figure}{\numberline {10}{\ignorespaces UML diagram of the \texttt {knn} package.\relax }}{14}{figure.caption.18}
-\contentsline {figure}{\numberline {11}{\ignorespaces UML diagram of the \texttt {es} package.\relax }}{15}{figure.caption.19}
-\contentsline {figure}{\numberline {12}{\ignorespaces UML diagram of the \texttt {test} package.\relax }}{15}{figure.caption.20}
+\contentsline {figure}{\numberline {1}{\ignorespaces Prometheus AI model.\relax }}{4}{figure.caption.8}
+\contentsline {figure}{\numberline {2}{\ignorespaces High-level model of the perceptron of the NN.}}{4}{figure.caption.9}
+\contentsline {figure}{\numberline {3}{\ignorespaces High-level model of the Knowledge Node of the KNN.}}{4}{figure.caption.10}
+\contentsline {figure}{\numberline {4}{\ignorespaces Thinking forwards in the KNN.\relax }}{5}{figure.caption.11}
+\contentsline {figure}{\numberline {5}{\ignorespaces Thinking backwards in the KNN.\relax }}{5}{figure.caption.12}
+\contentsline {figure}{\numberline {6}{\ignorespaces Lambda thinking in the KNN.\relax }}{6}{figure.caption.13}
+\contentsline {figure}{\numberline {7}{\ignorespaces Prometheus AI model with labeled input and output.\relax }}{7}{figure.caption.14}
+\contentsline {figure}{\numberline {8}{\ignorespaces Setup for the \texttt {testKNN()} method.}}{12}{figure.caption.15}
+\contentsline {figure}{\numberline {9}{\ignorespaces UML diagram of the \texttt {tags} package.\relax }}{15}{figure.caption.18}
+\contentsline {figure}{\numberline {10}{\ignorespaces UML diagram of the \texttt {knn} package.\relax }}{15}{figure.caption.19}
+\contentsline {figure}{\numberline {11}{\ignorespaces UML diagram of the \texttt {es} package.\relax }}{16}{figure.caption.20}
+\contentsline {figure}{\numberline {12}{\ignorespaces UML diagram of the \texttt {test} package.\relax }}{16}{figure.caption.21}

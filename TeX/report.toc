@@ -1,43 +1,43 @@
-\contentsline {section}{List of Figures}{4}{section*.4}
-\contentsline {section}{List of Tables}{4}{section*.5}
-\contentsline {section}{\numberline {1}Introduction}{5}{section.1}
-\contentsline {section}{\numberline {2}Background}{5}{section.2}
-\contentsline {subsection}{\numberline {2.1}Neural Network}{5}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Knowledge Node Network}{5}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Expert System}{7}{subsection.2.3}
-\contentsline {subsection}{\numberline {2.4}Meta Reasoner}{7}{subsection.2.4}
-\contentsline {subsection}{\numberline {2.5}Summary}{7}{subsection.2.5}
+\contentsline {section}{List of Figures}{3}{section*.4}
+\contentsline {section}{List of Tables}{3}{section*.5}
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}
+\contentsline {section}{\numberline {2}Background}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Neural Network}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Knowledge Node Network}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Expert System}{6}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Meta Reasoner}{6}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Summary}{6}{subsection.2.5}
 \contentsline {section}{\numberline {3}Problem}{7}{section.3}
-\contentsline {section}{\numberline {4}Design Criteria}{8}{section.4}
-\contentsline {subsection}{\numberline {4.1}Efficiency}{8}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Object Oriented Design}{8}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Abstraction}{8}{subsubsection.4.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2}Encapsulation}{9}{subsubsection.4.2.2}
-\contentsline {subsubsection}{\numberline {4.2.3}Polymorphism}{9}{subsubsection.4.2.3}
-\contentsline {subsubsection}{\numberline {4.2.4}Inheritance}{9}{subsubsection.4.2.4}
-\contentsline {section}{\numberline {5}Implementation}{9}{section.5}
-\contentsline {subsection}{\numberline {5.1}Tags}{9}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Knowledge Node Network}{9}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Expert System}{9}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Testing}{9}{subsection.5.4}
-\contentsline {subsubsection}{\numberline {5.4.1}Unit Tests}{10}{subsubsection.5.4.1}
-\contentsline {subsubsection}{\numberline {5.4.2}Integration Tests}{10}{subsubsection.5.4.2}
-\contentsline {subsection}{\numberline {5.5}Documentation}{10}{subsection.5.5}
-\contentsline {subsubsection}{\numberline {5.5.1}Javadoc}{10}{subsubsection.5.5.1}
-\contentsline {subsubsection}{\numberline {5.5.2}UML}{10}{subsubsection.5.5.2}
-\contentsline {section}{\numberline {6}Plan for Next Semester}{10}{section.6}
-\contentsline {subsection}{\numberline {6.1}Finalization}{10}{subsection.6.1}
-\contentsline {subsubsection}{\numberline {6.1.1}Knowledge Node Network}{10}{subsubsection.6.1.1}
-\contentsline {subsubsection}{\numberline {6.1.2}Expert System}{10}{subsubsection.6.1.2}
-\contentsline {subsection}{\numberline {6.2}Integration}{12}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Testing}{12}{subsection.6.3}
-\contentsline {subsubsection}{\numberline {6.3.1}Simulation}{12}{subsubsection.6.3.1}
-\contentsline {subsubsection}{\numberline {6.3.2}Physical}{12}{subsubsection.6.3.2}
-\contentsline {section}{\numberline {7}Impact on Society and the Environment}{12}{section.7}
-\contentsline {subsection}{\numberline {7.1}Use of Non-renewable Resources}{12}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Environmental Benefits}{12}{subsection.7.2}
-\contentsline {subsection}{\numberline {7.3}Safety and Risk}{12}{subsection.7.3}
-\contentsline {subsection}{\numberline {7.4}Benefits to Society}{13}{subsection.7.4}
-\contentsline {section}{\numberline {8}Conclusion}{13}{section.8}
-\contentsline {section}{\numberline {A}UML Diagrams}{14}{appendix.A}
-\contentsline {section}{References}{16}{section*.21}
+\contentsline {section}{\numberline {4}Design Criteria}{7}{section.4}
+\contentsline {subsection}{\numberline {4.1}Efficiency}{7}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Object Oriented Design}{7}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Abstraction}{7}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Encapsulation}{8}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}Polymorphism}{8}{subsubsection.4.2.3}
+\contentsline {subsubsection}{\numberline {4.2.4}Inheritance}{8}{subsubsection.4.2.4}
+\contentsline {section}{\numberline {5}Implementation}{8}{section.5}
+\contentsline {subsection}{\numberline {5.1}Tags}{8}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Knowledge Node Network}{8}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Expert System}{10}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Testing}{11}{subsection.5.4}
+\contentsline {subsubsection}{\numberline {5.4.1}Unit Tests}{11}{subsubsection.5.4.1}
+\contentsline {subsubsection}{\numberline {5.4.2}Integration Tests}{11}{subsubsection.5.4.2}
+\contentsline {subsection}{\numberline {5.5}Documentation}{11}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {5.5.1}Javadoc}{11}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.5.2}UML}{11}{subsubsection.5.5.2}
+\contentsline {section}{\numberline {6}Plan for Next Semester}{11}{section.6}
+\contentsline {subsection}{\numberline {6.1}Finalization}{11}{subsection.6.1}
+\contentsline {subsubsection}{\numberline {6.1.1}Knowledge Node Network}{11}{subsubsection.6.1.1}
+\contentsline {subsubsection}{\numberline {6.1.2}Expert System}{13}{subsubsection.6.1.2}
+\contentsline {subsection}{\numberline {6.2}Integration}{13}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Testing}{13}{subsection.6.3}
+\contentsline {subsubsection}{\numberline {6.3.1}Simulation}{13}{subsubsection.6.3.1}
+\contentsline {subsubsection}{\numberline {6.3.2}Physical}{13}{subsubsection.6.3.2}
+\contentsline {section}{\numberline {7}Impact on Society and the Environment}{13}{section.7}
+\contentsline {subsection}{\numberline {7.1}Use of Non-renewable Resources}{13}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Environmental Benefits}{13}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Safety and Risk}{13}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}Benefits to Society}{14}{subsection.7.4}
+\contentsline {section}{\numberline {8}Conclusion}{14}{section.8}
+\contentsline {section}{\numberline {A}UML Diagrams}{15}{appendix.A}
+\contentsline {section}{References}{17}{section*.22}

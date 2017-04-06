@@ -15,6 +15,8 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage{scrextend}
 \usepackage[margin=1in]{geometry}
+\usepackage{lstautodedent}
+
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -34,8 +36,13 @@
   stringstyle=\color{mauve},
   breaklines=true,
   breakatwhitespace=true,
-  tabsize=3
+  tabsize=3,
+  basicstyle=\scriptsize\tt,
+  autodedent
 }
+
+\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
+\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
 
 \def\equationautorefname~#1\null{%
   Equation~(#1)\null
@@ -49,7 +56,7 @@
   Subsection~#1\null
 }
 
-\def\arraystretch{1.2}%  1 is the default, change whatever you need
+\def\arraystretch{1.3}%  1 is the default, change whatever you need
 
 % Custom commands
 \newcommand{\ar}[1]{\autoref{#1}}
@@ -76,14 +83,14 @@
 \date{April 11, 2017}
 
 \begin{document}
-\lstset{language=Java} 
+	
 \sloppy
 
 \maketitle
 
 \section*{Abstract}
 % The abstract is an executive summary of your project/thesis. It should provide an overview of your project/thesis by addressing the following questions. a. What is the motivation for the project/thesis? b. What are the goals of the project/thesis? c. What was achieved this semester? d. What methods were used to make those achievements? The abstract should be between 200 and 250 words long.
-Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides a recommendation for an action to the Meta Reasoner. The META represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc \footnote{The Javadoc can be found here: \url{http://cs.mcgill.ca/~sstapp/prometheus/index.html}.}.
+Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides a recommendation for an action to the Meta Reasoner. The META represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc\footnote{The Javadoc can be found here: \url{http://cs.mcgill.ca/~sstapp/prometheus/index.html}.}.
 
 \section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
@@ -91,10 +98,10 @@ Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in
 
 \clearpage
 \tableofcontents
-\clearpage
 
 \listoffigures
 \listoftables
+\lstlistoflistings
 \clearpage
 
 \twocolumn
@@ -123,7 +130,8 @@ The structure of the system is inspired from the functionality of the human brai
 	\label{model}
 \end{figure}
 
-\section{Background} \label{sec:background}
+\section{Background}
+\label{sec:background}
 % In this section you should summarize the theory and background that you had to learn, and that you believe are necessary for the reader to understand the rest of the report.
 
 \subsection{Neural Network}
@@ -170,7 +178,7 @@ Forwards thinking is the simplest and was described earlier. It is depicted in \
 
 Thinking backwards starts at the output tags of Knowledge Nodes, and works backwards, as can seen in \autoref{think_backwards}. In its simplest form, it checks output tags of Knowledge Nodes and, if all of them are active, the input tag must be active as well, so that Knowledge Node is activated.
 
-This type of thinking can be a bit more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node activate when all its output nodes are active (100\%), or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with a certain uncertainty and this is what can be represented with this type of backwards thinking.
+This type of thinking can be a bit more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node activate when all its output nodes are active (100\%), or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with a certain uncertainty and this is what can be represented with this type of backwards thinking. The memories of this observation are then even more uncertain.
 % TODO: source^^
 
 This type of thinking occurs constantly in the background in humans \cite{vybihal-knowledge}, and this is something to keep in mind during implementation.
@@ -268,10 +276,10 @@ Many methods in the system can have different functionality depending on context
 
 \subsubsection{Inheritance}
 
-Careful thought was put into how objects may inherit functionality from each other. This can most clearly be seen with the implementation of the tags, which will we described in \autoref{implementation}.
+Careful thought was put into how objects may inherit functionality from each other. This can most clearly be seen with the implementation of the tags, which will we described in \autoref{sec:implementation}.
 
 \section{Implementation}
-\label{implementation}
+\label{sec:implementation}
 
 The details of how the KNN and ES were implemented in Java will now be discussed.
 
@@ -289,14 +297,131 @@ All of these classes were placed inside the \code{tags} package. A UML diagram o
 
 All code relating directly to the KNN was placed in the \code{knn} package of the project. A UML diagram of the \code{knn} package can be seen in \autoref{uml_knn} of the Appendix.
 
-The KNN layer is based around the \code{KnowledgeNodeNetwork} Java class.
+The KNN layer is based around the \code{KnowledgeNodeNetwork} Java class. This class has the following fields:
+
+\begin{labeling}{\code{activeTags}}
+	\item[\code{mapKN}] \code{Map} of input \code{Tags} to associated \code{KnowledgeNodes}
+	\item[\code{activeTags}] \code{Set} of active \code{Tags}, corresponding to input \code{Tags} of fired \code{KnowledgeNodes}
+\end{labeling}
+
+The \code{KnowledgeNode} class implements the functionality of a Knowledge Node, which has the following important fields implemented functionality described in \autoref{sec:background}:
+
+\begin{labeling}{\code{outputTags}}
+	\item[\code{inputTag}] input \code{Tag}.
+	\item[\code{outputTags}] \code{Array} of output \code{Tags}.
+	\item[\code{activation}] \code{int} starting at 0, incrementing when the \code{KnowledgeNode} is excited.
+	\item[\code{threshold}] \code{int} threshold such that \code{activation $\geq$ threshold} causes firing of the \code{KnowledgeNode}.
+	\item[\code{strength}] \code{int} that biases the activation of a \code{KnowledgeNode}, causing early firing. Simple implementation: if \code{activation * strength $\geq$ threshold} then fire the KN.
+	\item[\code{confidence}] \code{int} representing the belief that \code{inputTag} is true (0 to 100\%).
+	\item[\code{age}] \code{int} representing the age of the \code{KnowledgeNode}.
+\end{labeling}
+
+The most important method in the \code{KnowledgeNodeNetwork} is \code{think()}, which chooses either \code{thinkForwards()}, \code{thinkBackwards()}, or \code{thinkLambda()}. These methods implement the functionality described in \ar{sec:background} and return the \code{Tags} activated as a result of thinking.
+
+Without a parameter, the \code{think()} method runs to natural quiescence. There is also an overloaded version of \code{think()} that takes an \code{int} \code{numberOfCycles} as a parameter. This parameter represents the thinking effort described earlier. Similarly, \code{thinkForwards()}, \code{thinkBackwards()}, and \code{thinkLambda()} all have overloaded versions with \code{numberOfCycles} as a parameter.
+
+Currently, only the \code{thinkForwards()} method is fully completed. The version of the method that runs until quiescence can be seen in \autoref{lst:thinkForwards}.
+
+\lstinputlisting[
+firstline=162,
+lastline=170,
+caption=Thinking forwards until quiescence in the KNN.,
+label=lst:thinkForwards
+]{
+	\knnpath
+}
+
+The version of \code{thinkForwards()} with a fixed number of thinking cycles can be seen in \autoref{lst:thinkForwardsThreshold}.
+
+\lstinputlisting[
+firstline=178,
+lastline=188,
+caption=Thinking forwards for a fixed number of cycles in the KNN.,
+label=lst:thinkForwardsThreshold
+]{
+	\knnpath
+}
+
+One can see that the \code{thinkForwards()} methods repeatedly call \code{forwardThinkCycle()}, which can be seen in \autoref{lst:forwardThinkCycle}. This method is where \code{Tags} can become active, being added into the \code{activeTags} \code{Set}.
+
+\lstinputlisting[
+firstline=195,
+lastline=210,
+caption=Single cycle of thinking forwards in the KNN.,
+label=lst:forwardThinkCycle
+]{
+	\knnpath
+}
+
+One can see that the \code{forwardThinkCycle()} calls an \code{excite()} method to excite a \code{KnowledgeNode}. This method returns the \code{Tags} activated as a result of excitation. The code can be seen in \autoref{lst:excite}.
+
+\lstinputlisting[
+firstline=218,
+lastline=225,
+caption=Method to excite a Knowledge Node.,
+label=lst:excite
+]{
+	\knnpath
+}
+
+This method, in turn, may call a \code{fire()} method to fire the \code{KnowledgeNode} and activate its output tags. It returns all the \code{Tags} activated as a result of firing that \code{KnowledgeNode}. The code can be seen in \autoref{lst:fire}.
+
+\lstinputlisting[
+firstline=233,
+lastline=241,
+caption={Method to fire a Knowledge Node, activating its output tags.},
+label=lst:fire
+]{
+	\knnpath
+}
 
 \subsection{Expert System}
 
 All code relating directly to the ES was placed in the \code{es} package of the project. A UML diagram of the \code{es} package can be seen in \autoref{uml_es} of the Appendix.
 
-The ES layer is based around the \code{ExpertSystem} Java class.
+The ES layer is based around the \code{ExpertSystem} Java class. This class has the following fields:
 
+\begin{labeling}{\code{recommendations}}
+	\item[\code{readyRules}] \code{Set} of \code{Rules} that have not been activated yet.
+	\item[\code{activeRules}] \code{Set} of active \code{Rules}.
+	\item[\code{facts}] \code{Set} of active \code{Facts}.
+	\item[\code{recommendations}] \code{Set} of active \code{Recommendations}.
+\end{labeling}
+
+The most important method in the \code{ExpertSystem} is \code{think()}, which chooses either \code{thinkForwards()}, \code{thinkBackwards()}, or \code{thinkLambda()}. These methods implement the functionality described in \ar{sec:background}.
+
+Without a parameter, the \code{think()} method runs to natural quiescence. This can be seen in \autoref{lst:think}.
+
+\lstinputlisting[
+firstline=153,
+lastline=166,
+caption=Thinking until quiescence in the ES.,
+label=lst:think
+]{
+	\espath
+}
+
+There is also an overloaded version of \code{think()} that functions similarly to that of the \code{KnowledgeNodeNetwork}. This can be seen in \autoref{lst:thinkThreshold}
+
+\lstinputlisting[
+firstline=178,
+lastline=192,
+caption=Thinking with a fixed number of cycles in the ES.,
+label=lst:thinkThreshold
+]{
+	\espath
+}
+
+Both versions of \code{think()} call a method named \code{thinkCycle()} representing a single cycle of thinking. The code for this method can be seen in \autoref{lst:thinkCycle}
+
+\lstinputlisting[
+firstline=202,
+lastline=229,
+caption=A single cycle of thinking in the ES.,
+label=lst:thinkCycle
+]{
+	\espath
+}
 
 \subsection{Testing}
 
@@ -321,7 +446,7 @@ The test setup for the \code{testKNN()} method can be seen in \autoref{testKNN}.
 
 The test setup for the \code{testES()} method can be seen in \autoref{testES}.
 
-\begin{table*}
+\begin{table*}[!htb]
 	\large
 	\centering
 	\begin{tabular}{c | c | c | c} 
@@ -337,7 +462,7 @@ The test setup for the \code{testES()} method can be seen in \autoref{testES}.
 
 The \code{testKNNandES()} method has the same setup as \code{testKNN()} in \autoref{testKNN}, except the output active Tags are passed on to the ES. The resulting setup and activation can be seen in \autoref{testKNNandES}.
 
-\begin{table*}
+\begin{table*}[!htb]
 	\large
 	\centering
 	\begin{tabular}{c | c | c | c} 
@@ -386,6 +511,10 @@ Some thought still needs to be put into the specifics on implementation of lambd
 Confidence values will probably be associated with every individual \code{Tag}, as well as in an absolute sense in the KNN. Activation through the layers of the KNN can theoretically then reduce the absolute confidence that the output \code{Tags} are true, since at every step the confidence should be multiplied with the previous value.
 
 The intuitive implementation of aging is to constantly increment some age value associated with every Knowledge Node, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every Knowledge Node when it is excited, and if the KNN attempts to excite a Knowledge Node whose previous timestamp value is too far into the past, that node is instead deleted.
+
+Activation of Knowledge Nodes with sigmoid functions can also be looked into. This can be easily implemented using a cache of known sigmoid values.
+
+Also, more thought will have to be put into the design of the KNN to allow cyclic graphs, representing recursive memories in the human brain.
 
 \subsubsection{Expert System}
 

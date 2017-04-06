@@ -1,0 +1,244 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{package} \PYG{n+nn}{knn}\PYG{o}{;}
+
+\PYG{k+kn}{import} \PYG{n+nn}{interfaces.PrometheusLayer}\PYG{o}{;}
+\PYG{k+kn}{import} \PYG{n+nn}{tags.Tag}\PYG{o}{;}
+
+\PYG{k+kn}{import} \PYG{n+nn}{java.util.HashMap}\PYG{o}{;}
+\PYG{k+kn}{import} \PYG{n+nn}{java.util.HashSet}\PYG{o}{;}
+\PYG{k+kn}{import} \PYG{n+nn}{java.util.Map}\PYG{o}{;}
+\PYG{k+kn}{import} \PYG{n+nn}{java.util.Set}\PYG{o}{;}
+
+\PYG{c+cm}{/**}
+\PYG{c+cm}{ * Knowledge Node Network (KNN)}
+\PYG{c+cm}{ */}
+\PYG{k+kd}{public} \PYG{k+kd}{class} \PYG{n+nc}{KnowledgeNodeNetwork} \PYG{k+kd}{implements} \PYG{n}{PrometheusLayer} \PYG{o}{\PYGZob{}}
+    \PYG{c+c1}{// TODO Allow cyclic graph (recursion)}
+    \PYG{k+kd}{private} \PYG{n}{Map}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{,} \PYG{n}{KnowledgeNode}\PYG{o}{\PYGZgt{}} \PYG{n}{mapKN}\PYG{o}{;}
+    \PYG{k+kd}{private} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{activeTags}\PYG{o}{;}
+
+    \PYG{c+c1}{// TODO: Add Sigmoid cache + sigmoid function (perhaps in outside class)}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Creates a new Knowledge Node Network (KNN) based on a database.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param dbFilename  the filename of the database to be read from (probably CSV or JSON)}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{n+nf}{KnowledgeNodeNetwork}\PYG{o}{(}\PYG{n}{String} \PYG{n}{dbFilename}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{mapKN} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{n}{activeTags} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Resets the KNN to a state from a database.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param dbFilename  the filename of the database to be read from}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{reset}\PYG{o}{(}\PYG{n}{String} \PYG{n}{dbFilename}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Resets the KNN by clearing all data structures.}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{resetEmpty}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{n}{clearKN}\PYG{o}{();}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Saves the current state of the KNN to a database.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param dbFilename  the filename of the database}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{saveKNN}\PYG{o}{(}\PYG{n}{String} \PYG{n}{dbFilename}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Clears all the Knowledge Nodes from the KNN.}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{clearKN}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{n}{mapKN}\PYG{o}{.}\PYG{n+na}{clear}\PYG{o}{();}
+        \PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{clear}\PYG{o}{();}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Adds a Knowledge Node to the KNN.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param kn  the Knowledge Node to be added}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addKN}\PYG{o}{(}\PYG{n}{KnowledgeNode} \PYG{n}{kn}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{mapKN}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{kn}\PYG{o}{.}\PYG{n+na}{inputTag}\PYG{o}{,} \PYG{n}{kn}\PYG{o}{);}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Deletes a Knowledge Node from the KNN.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param tag  the input Tag of the Knowledge Node to be deleted}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{delKN}\PYG{o}{(}\PYG{n}{Tag} \PYG{n}{tag}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{mapKN}\PYG{o}{.}\PYG{n+na}{remove}\PYG{o}{(}\PYG{n}{tag}\PYG{o}{);}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Adds a fired Tag to the KNN.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param tag  the fired Tag to be added}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addFiredTag}\PYG{o}{(}\PYG{n}{Tag} \PYG{n}{tag}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{add}\PYG{o}{(}\PYG{n}{tag}\PYG{o}{);}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{k+kd}{public} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{getActiveTags}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{activeTags}\PYG{o}{;}
+    \PYG{o}{\PYGZcb{}}
+
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Makes the KNN think, and start cascaded activation and firing if possible. Chooses either thinkForwards(),}
+\PYG{c+cm}{     * thinkBackwards() or thinkLambda() internally based on a command from the META (activeTagsMETA).}
+\PYG{c+cm}{     * TODO: If no recommendations are fired, think() will resort to either thinkBackwards or thinkLambda. (Not theoretically well understood)}
+\PYG{c+cm}{     * TODO: People generally thinkBackwards all the time in the background. In the future, could have a background thread that thinks backwards...}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @return  the Tags activated as a result of thinking}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{think}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{thinkForwards}\PYG{o}{();}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Thinks for a fixed number of cycles. The number of cycles represents how much effort is being put into thinking.}
+\PYG{c+cm}{     * Each cycle is a run\PYGZhy{}through of all the fired Tags, activating and firing new Tags if possible. Note that a Tag}
+\PYG{c+cm}{     * that becomes active in a cycle is not iterated over in that same cycle, and must wait until the next cycle to}
+\PYG{c+cm}{     * cascade further activation.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param numberOfCycles  the number of cycles to think for}
+\PYG{c+cm}{     * @return                the Tags activated as a result of thinking}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{public} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{think}\PYG{o}{(}\PYG{k+kt}{int} \PYG{n}{numberOfCycles}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{thinkForwards}\PYG{o}{(}\PYG{n}{numberOfCycles}\PYG{o}{);}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Thinking backwards works as follows: given output tags, the system attempts to find the associated input Tags}
+\PYG{c+cm}{     * with some degree of confidence.}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{k+kt}{void} \PYG{n+nf}{thinkBackwards}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{pendingFacts} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{k}{do} \PYG{o}{\PYGZob{}}
+            \PYG{n}{pendingFacts}\PYG{o}{.}\PYG{n+na}{clear}\PYG{o}{();}
+            \PYG{k}{for} \PYG{o}{(}\PYG{n}{KnowledgeNode} \PYG{n}{kn} \PYG{o}{:} \PYG{n}{mapKN}\PYG{o}{.}\PYG{n+na}{values}\PYG{o}{())} \PYG{o}{\PYGZob{}}
+                \PYG{k+kt}{boolean} \PYG{n}{inputActivated} \PYG{o}{=} \PYG{k+kc}{true}\PYG{o}{;}
+                \PYG{k}{for} \PYG{o}{(}\PYG{n}{Tag} \PYG{n}{t} \PYG{o}{:} \PYG{n}{kn}\PYG{o}{.}\PYG{n+na}{outputTags}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{o}{(!}\PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{contains}\PYG{o}{(}\PYG{n}{t}\PYG{o}{))} \PYG{o}{\PYGZob{}} \PYG{c+c1}{// Currently only activates input if ALL output Tags are true}
+                        \PYG{n}{inputActivated} \PYG{o}{=} \PYG{k+kc}{false}\PYG{o}{;}
+                        \PYG{k}{break}\PYG{o}{;}
+                    \PYG{o}{\PYGZcb{}}
+                \PYG{o}{\PYGZcb{}}
+                \PYG{k}{if} \PYG{o}{(}\PYG{n}{inputActivated}\PYG{o}{)}
+                    \PYG{n}{pendingFacts}\PYG{o}{.}\PYG{n+na}{add}\PYG{o}{(}\PYG{n}{kn}\PYG{o}{.}\PYG{n+na}{inputTag}\PYG{o}{);}
+            \PYG{o}{\PYGZcb{}}
+            \PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{addAll}\PYG{o}{(}\PYG{n}{pendingFacts}\PYG{o}{);}
+        \PYG{o}{\PYGZcb{}} \PYG{k}{while} \PYG{o}{(!}\PYG{n}{pendingFacts}\PYG{o}{.}\PYG{n+na}{isEmpty}\PYG{o}{());}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Combination of thinkBackwards and thinkForwards. First the networks works backwards, then moves forward to}
+\PYG{c+cm}{     * determine the correct memory.}
+\PYG{c+cm}{     * TODO?: How far backwards do you go before going forwards?}
+\PYG{c+cm}{     * TODO?: Specific use case for lambda thinking?}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{k+kt}{void} \PYG{n+nf}{thinkLambda}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{n}{thinkBackwards}\PYG{o}{();}
+        \PYG{n}{thinkForwards}\PYG{o}{();}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Makes the ES think forwards using simple forward activation of knowledge nodes. If input tag is activated and}
+\PYG{c+cm}{     * activation is greater than the threshold, the output tags are activated, and this is cascaded through the}
+\PYG{c+cm}{     * network.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @return  the Tags activated as a result of thinking}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{thinkForwards}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{totalActivatedTags} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{activatedTags}\PYG{o}{;}
+        \PYG{k}{do} \PYG{o}{\PYGZob{}}
+            \PYG{n}{activatedTags} \PYG{o}{=} \PYG{n}{forwardThinkCycle}\PYG{o}{();}
+            \PYG{n}{totalActivatedTags}\PYG{o}{.}\PYG{n+na}{addAll}\PYG{o}{(}\PYG{n}{activatedTags}\PYG{o}{);}
+        \PYG{o}{\PYGZcb{}} \PYG{k}{while} \PYG{o}{(!}\PYG{n}{activatedTags}\PYG{o}{.}\PYG{n+na}{isEmpty}\PYG{o}{());}
+        \PYG{k}{return} \PYG{n}{totalActivatedTags}\PYG{o}{;}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Makes the ES think forwards for a fixed number of cycles.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param numberOfCycles  the number of cycles to think for}
+\PYG{c+cm}{     * @return                the Tags activated as a result of thinking}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{thinkForwards}\PYG{o}{(}\PYG{k+kt}{int} \PYG{n}{numberOfCycles}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{totalActivatedTags} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{k}{for} \PYG{o}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{numberOfCycles}\PYG{o}{;} \PYG{n}{i}\PYG{o}{++)} \PYG{o}{\PYGZob{}}
+            \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{activatedTags} \PYG{o}{=} \PYG{n}{forwardThinkCycle}\PYG{o}{();}
+            \PYG{k}{if} \PYG{o}{(}\PYG{n}{activatedTags}\PYG{o}{.}\PYG{n+na}{isEmpty}\PYG{o}{())} \PYG{o}{\PYGZob{}}
+                \PYG{k}{break}\PYG{o}{;}
+            \PYG{o}{\PYGZcb{}}
+            \PYG{n}{totalActivatedTags}\PYG{o}{.}\PYG{n+na}{addAll}\PYG{o}{(}\PYG{n}{activatedTags}\PYG{o}{);}
+        \PYG{o}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{totalActivatedTags}\PYG{o}{;}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Makes the ES think forwards for a single cycle.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @return  the Tags activated as a result of thinking}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{forwardThinkCycle}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{allPendingActiveTags} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{k}{for} \PYG{o}{(}\PYG{n}{Tag} \PYG{n}{t} \PYG{o}{:} \PYG{n}{activeTags}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+            \PYG{k}{if} \PYG{o}{(}\PYG{n}{mapKN}\PYG{o}{.}\PYG{n+na}{containsKey}\PYG{o}{(}\PYG{n}{t}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+                \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{pendingActiveTags} \PYG{o}{=} \PYG{n}{excite}\PYG{o}{(}\PYG{n}{mapKN}\PYG{o}{.}\PYG{n+na}{get}\PYG{o}{(}\PYG{n}{t}\PYG{o}{));}
+                \PYG{k}{if} \PYG{o}{(!}\PYG{n}{pendingActiveTags}\PYG{o}{.}\PYG{n+na}{isEmpty}\PYG{o}{())} \PYG{o}{\PYGZob{}}
+                    \PYG{k}{for} \PYG{o}{(}\PYG{n}{Tag} \PYG{n}{tag} \PYG{o}{:} \PYG{n}{pendingActiveTags}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+                        \PYG{k}{if} \PYG{o}{(!}\PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{contains}\PYG{o}{(}\PYG{n}{tag}\PYG{o}{))}
+                            \PYG{n}{allPendingActiveTags}\PYG{o}{.}\PYG{n+na}{add}\PYG{o}{(}\PYG{n}{tag}\PYG{o}{);}
+                    \PYG{o}{\PYGZcb{}}
+                \PYG{o}{\PYGZcb{}}
+            \PYG{o}{\PYGZcb{}}
+        \PYG{o}{\PYGZcb{}}
+        \PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{addAll}\PYG{o}{(}\PYG{n}{allPendingActiveTags}\PYG{o}{);}
+        \PYG{k}{return} \PYG{n}{allPendingActiveTags}\PYG{o}{;}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Excites a Knowledge Node. If excitation leads to firing, this will return the output Tags fired.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param knowledgeNode  the Knowledge Node to excite}
+\PYG{c+cm}{     * @return               the Tags activated as a result of excitation}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{excite}\PYG{o}{(}\PYG{n}{KnowledgeNode} \PYG{n}{knowledgeNode}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{pendingActiveTags} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{n}{knowledgeNode}\PYG{o}{.}\PYG{n+na}{activation}\PYG{o}{++;}
+        \PYG{k}{if} \PYG{o}{(}\PYG{n}{knowledgeNode}\PYG{o}{.}\PYG{n+na}{activation} \PYG{o}{\PYGZgt{}=} \PYG{n}{knowledgeNode}\PYG{o}{.}\PYG{n+na}{threshold}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+            \PYG{n}{pendingActiveTags} \PYG{o}{=} \PYG{n}{fire}\PYG{o}{(}\PYG{n}{knowledgeNode}\PYG{o}{);}
+        \PYG{o}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{pendingActiveTags}\PYG{o}{;}
+    \PYG{o}{\PYGZcb{}}
+
+    \PYG{c+cm}{/**}
+\PYG{c+cm}{     * Fires a Knowledge Node.}
+\PYG{c+cm}{     *}
+\PYG{c+cm}{     * @param knowledgeNode  the Knowledge Node to fire}
+\PYG{c+cm}{     * @return               the Tags activated as a result of firing}
+\PYG{c+cm}{     */}
+    \PYG{k+kd}{private} \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{fire}\PYG{o}{(}\PYG{n}{KnowledgeNode} \PYG{n}{knowledgeNode}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{Set}\PYG{o}{\PYGZlt{}}\PYG{n}{Tag}\PYG{o}{\PYGZgt{}} \PYG{n}{pendingActiveTags} \PYG{o}{=} \PYG{k}{new} \PYG{n}{HashSet}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+        \PYG{k}{for} \PYG{o}{(}\PYG{n}{Tag} \PYG{n}{outputTag} \PYG{o}{:} \PYG{n}{knowledgeNode}\PYG{o}{.}\PYG{n+na}{outputTags}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+            \PYG{k}{if} \PYG{o}{(!}\PYG{n}{activeTags}\PYG{o}{.}\PYG{n+na}{contains}\PYG{o}{(}\PYG{n}{outputTag}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+                \PYG{n}{pendingActiveTags}\PYG{o}{.}\PYG{n+na}{add}\PYG{o}{(}\PYG{n}{outputTag}\PYG{o}{);}
+            \PYG{o}{\PYGZcb{}}
+        \PYG{o}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{pendingActiveTags}\PYG{o}{;}
+    \PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}
