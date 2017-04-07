@@ -29,8 +29,6 @@
   showstringspaces=false,
   columns=flexible,
   basicstyle={\small\ttfamily},
-  numbers=none,
-  numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
@@ -38,7 +36,12 @@
   breakatwhitespace=true,
   tabsize=3,
   basicstyle=\scriptsize\tt,
-  autodedent
+  autodedent,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  xleftmargin=2.5em,
+  frame=single,
+  framexleftmargin=2em
 }
 % PC
 %\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
@@ -213,9 +216,12 @@ This type of thinking occurs in humans when using analogical reasoning to solve 
 All forms of thinking can continue until there are no more Knowledge Nodes to activate, which corresponds to natural quiescence. There can also be a fixed number of cycles through the list of active tags. This fixed cycle number represents how much effort is being put into thinking. Indeed, in animals, most thinking is never done at 100\% effort, and it would be interesting to model this.
 % TODO: source (thinking effort)
 
-There is a strength value associated with every Knowledge Node which represents how much weight an activation has and therefore how quickly that node will fire. A simple implementation of strength would be as a constant coefficient multiplying each activation increment. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$.
+There is a strength value associated with every Knowledge Node which represents how much weight an activation has and therefore how quickly that node will fire.
 
-Confidence was mentioned earlier in the context of thinking backwards. This concept can however extend beyond this context. Indeed, every individual Knowledge Node can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. These confidence values can come from the NN, since a neural network will always have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other, making the KNN less certain of a memory as it searches through its tree of Knowledge Nodes. This represents memories in the human brain require a great deal of thinking to reach and, as such, are less certain than other memories.
+A simple implementation of strength would be as a constant coefficient multiplying each activation increment. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$, where the strength is positive. The strength value could be 0 however, which effectively shuts off the Knowledge Node. Another way of implementing strength is to check $activation + strength \geq threshold$. In this case, strength can be negative and hinder the firing of the node.
+% TODO: source (animals can be predisposed through learning to fire information early or late)
+
+Confidence was mentioned earlier in the context of thinking backwards. This concept can however extend beyond this context. Indeed, every individual Knowledge Node can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. In this case, the confidence value would be stored within the Knowledge Node itself. These confidence values can come from the NN, since a neural network will always have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other to produce a new confidence value, making the KNN less certain of a memory as it searches through its tree of Knowledge Nodes. This represents how belief changes when thinking. Indeed, some memories in the human brain require a great deal of thinking to reach and, as such, are less certain than other memories.
 % TODO: source (certainty of memories)
 
 Age represents how long it has been since a Knowledge Node has been excited. The idea is that, after a Knowledge Node has aged a certain amount of time, that node will be discarded, similarly to how old memories are discarded in the brain.
@@ -301,13 +307,17 @@ Careful thought was put into how objects may inherit functionality from each oth
 \section{Implementation}
 \label{sec:implementation}
 
-The details of how the KNN and ES were implemented in Java will now be discussed.
+The details of how the prototype of the system was implemented in Java will now be discussed.
 
 \subsection{Tags}
 
 The entire system revolves around tags passed from layer to layer. For this reason, a lot of thought was put into the proper design of these tags. To leverage OOP principles and readability, it was decided to implement these tags with a \code{Tag} class in Java, with \code{Fact}, \code{Rule} and \code{Recommendation} subclasses.
 
-The tags described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java \code{String}, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a fact, a recommendation, or a rule. If implemented as \code{String}s, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. For this reason, the tags are instead implemented using a \code{Tag} Java class, with \code{Recommendation}, \code{Fact}, and \code{Rule} subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
+The tags described in \autoref{sec:background} need to be as general as possible. A natural choice for this structure would be a Java \code{String}, which would be relatively simple to pass around the system. However, these tags represent various concepts; each tag can either be a fact, a recommendation, or a rule. If implemented as \code{String}s, the tags would have to be encoded on creation to represent each concept and decoded on use to retrieve the important information. This seems like a bad use of the OOP principles of Java. Furthermore, if specific functionality is needed in the future for each tag type, that can easily be implemented with a Java class. For these reasons, the tags are implemented using a \code{Tag} Java class, with \code{Recommendation}, \code{Fact}, and \code{Rule} subclasses. This should also make manipulating the Tags faster, while incurring a slight memory overhead. To store these Tags in a database, they can be converted to JSON format. On read from the database, they can be easily decoded.
+
+The \code{Tag} class has an associated \code{Type}, which can take the following \code{enum} values: \code{FACT}, \code{RECOMMENDATION}, and \code{RULE}. This is used to distinguish the three types of \code{Tags}.
+
+The \code{Fact} and \code{Recommendation} classes at this point are little more than wrapper classes around a \code{String} value. More interesting feaures will be added later on (see \autoref{sec:plan}). The \code{Rule} class has two important fields: \code{inputTags} and \code{outputTags}, which are \code{Arrays} of \code{Tags}.
 
 The \code{Tag} class itself was made abstract. This means that an object may not be directly instantiated as a \code{Tag}, but must be instantiated as one of its subclasses. This makes sense, since a tag \emph{must} be one of the three types: rule, recommendation or fact.
 
@@ -343,8 +353,8 @@ Without a parameter, the \code{think()} method runs to natural quiescence. There
 Currently, only the \code{thinkForwards()} method is fully completed. The version of the method that runs until quiescence can be seen in \autoref{lst:thinkForwards}.
 
 \lstinputlisting[
-firstline=162,
-lastline=170,
+firstline=163,
+lastline=171,
 caption=Thinking forwards until quiescence in the KNN.,
 label=lst:thinkForwards
 ]{
@@ -354,8 +364,8 @@ label=lst:thinkForwards
 The version of \code{thinkForwards()} with a fixed number of thinking cycles can be seen in \autoref{lst:thinkForwardsThreshold}.
 
 \lstinputlisting[
-firstline=178,
-lastline=188,
+firstline=179,
+lastline=189,
 caption=Thinking forwards for a fixed number of cycles in the KNN.,
 label=lst:thinkForwardsThreshold
 ]{
@@ -365,35 +375,37 @@ label=lst:thinkForwardsThreshold
 One can see that the \code{thinkForwards()} methods repeatedly call \code{forwardThinkCycle()}, which can be seen in \autoref{lst:forwardThinkCycle}. This method is where \code{Tags} can become active, being added into the \code{activeTags} \code{Set}.
 
 \lstinputlisting[
-firstline=195,
-lastline=203,
+firstline=196,
+lastline=206,
 caption=Single cycle of thinking forwards in the KNN.,
 label=lst:forwardThinkCycle
 ]{
 	\knnpath
 }
 
-One can see that the \code{forwardThinkCycle()} calls an \code{excite()} method to excite a \code{KnowledgeNode}. This method returns the \code{Tags} activated as a result of excitation. The code can be seen in \autoref{lst:excite}.
+One can see that the \code{forwardThinkCycle()} calls an \code{excite()} method on line 5 to excite a \code{KnowledgeNode}. This method returns the \code{Tags} activated as a result of excitation. The code can be seen in \autoref{lst:excite}.
 
 \lstinputlisting[
-firstline=212,
-lastline=219,
+firstline=214,
+lastline=221,
 caption=Method to excite a Knowledge Node.,
 label=lst:excite
 ]{
 	\knnpath
 }
 
-This method, in turn, may call a \code{fire()} method to fire the \code{KnowledgeNode} and activate its output tags. It returns all the \code{Tags} to be activated as a result of firing that \code{KnowledgeNode}. The code can be seen in \autoref{lst:fire}.
+This method, in turn, may call a \code{fire()} method on line 5 to fire the \code{KnowledgeNode} and activate its output tags. It returns all the \code{Tags} to be activated as a result of firing that \code{KnowledgeNode}. The code can be seen in \autoref{lst:fire}.
 
 \lstinputlisting[
-firstline=227,
-lastline=235,
+firstline=229,
+lastline=237,
 caption={Method to fire a Knowledge Node, activating its output tags.},
 label=lst:fire
 ]{
 	\knnpath
 }
+
+A simple version of \code{thinkBackwards()} was also completed, activating a Knowledge Node only if all its output \code{Tags} are active.
 
 \subsection{Expert System}
 
@@ -436,9 +448,20 @@ Both versions of \code{think()} call a method named \code{thinkCycle()} represen
 
 \lstinputlisting[
 firstline=202,
-lastline=228,
+lastline=227,
 caption=A single cycle of thinking in the ES.,
 label=lst:thinkCycle
+]{
+	\espath
+}
+
+Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} method on line 21, which adds a \code{Tag} to the ES depending on its type. The code can be seen in \autoref{lst:addTag}. The method is \code{public} because it could be used by a user of the ES to set the initial data structures. It returns \code{true} if the \code{Tag} is added successfully. The \code{addRule()}, \code{addFact()}, and \code{addRecommendation} methods simply add a \code{Tag} to the \code{readyRules}, \code{facts}, or \code{recommendations} \code{Sets}, respectively, and return \code{true} if the ES did not already contain the \code{Tag} to be added.
+
+\lstinputlisting[
+firstline=55,
+lastline=65,
+caption=Method to add a Tag to the ES.,
+label=lst:addTag
 ]{
 	\espath
 }
@@ -513,9 +536,10 @@ Extensive Javadoc was generated for the entire code base. This can be found here
 
 \subsubsection{UML}
 
-UML diagrams of every package in the code base were created.
+UML diagrams of every package in the code base were created. These can be seen in \autoref{sec:uml}.
 
 \section{Plan for Next Semester}
+\label{sec:plan}
 % In this section you should describe a plan for next semester. What tasks remain to be done, and what is the timeline for accomplishing these tasks? Furthermore you can describe how you plan to test your design in order to make sure it meets the desired specifications. Also outline the design decisions that are required in order to make sure that the final product can be tested.
 
 % TODO: Maybe include schedule (GANTT chart)
@@ -617,6 +641,7 @@ The main goal for next semester is to finalize the entire system, implementing m
 
 \section{UML Diagrams}
 \label{sec:uml}
+% TODO: update UML diagrams
 
 \begin{figure}[!htb]
 	\centering

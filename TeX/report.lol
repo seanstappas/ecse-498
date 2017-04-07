@@ -6,3 +6,4 @@
 \contentsline {lstlisting}{\numberline {6}Thinking until quiescence in the ES.}{11}{lstlisting.6}
 \contentsline {lstlisting}{\numberline {7}Thinking with a fixed number of cycles in the ES.}{11}{lstlisting.7}
 \contentsline {lstlisting}{\numberline {8}A single cycle of thinking in the ES.}{11}{lstlisting.8}
+\contentsline {lstlisting}{\numberline {9}Method to add a Tag to the ES.}{12}{lstlisting.9}
