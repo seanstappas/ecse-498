@@ -153,6 +153,8 @@ The NN layer gathers raw sensor data and will build an abstract view of the robo
 
 To achieve these goals, a convolutional neural network will be used. This will determine which regions of the image are important and classify objects in those regions. A 3D view of the world will also be generated. Using ultrasonic sensor readings and coordinate transformations from the world to the camera images, the observed objects can be localized in space.
 
+% TODO: source (benefit of convolutional neural networks)
+
 Ultimately, the classification and localization of objects will produce abstract informational tags, which will be passed on to the KNN. These tags can therefore be measures of the position of an object, or other characteristics about an object.
 
 % TODO: Put figure of robots with their sensors
@@ -174,7 +176,7 @@ In its simplest form, the Knowledge Node can be excited by an activated input ta
 % TODO: source ^^?
 % TODO: talk more about relation to neurons in brain, and ways to leverage this
 
-Other ways of thinking are also possible. Indeed, the KNN has three main ways of thinking: forwards, backwards, and lambda. The version of thinking to be done by the KNN is chosen by the META.
+The KNN has three main ways of thinking: forwards, backwards, and lambda. The version of thinking to be done by the KNN is chosen by the META.
 
 Forwards thinking is the simplest and was described earlier. It is depicted in \autoref{think_forwards}. Firing a Knowledge Node can cause forward activation of more Knowledge Nodes, hence the ``forwards'' naming.
 
@@ -186,12 +188,11 @@ Forwards thinking is the simplest and was described earlier. It is depicted in \
 
 Thinking backwards starts at the output tags of Knowledge Nodes, and works backwards, as can seen in \autoref{think_backwards}. In its simplest form, it checks output tags of Knowledge Nodes and, if all of them are active, the input tag must be active as well, so that Knowledge Node is activated.
 
-This type of thinking can be a bit more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node activate when all its output nodes are active (100\%), or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with a certain uncertainty and this is what can be represented with this type of backwards thinking. The memories of this observation are then even more uncertain.
-% TODO: source^^
+This type of thinking can be a bit more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node activate when all its output nodes are active (100\%), or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with a certain uncertainty and this is what can be represented with this type of backwards thinking.
+% TODO: source (humans classify with uncertainty)
 
 This type of thinking occurs constantly in the background in humans \cite{vybihal-knowledge}, and this is something to keep in mind during implementation.
-% TODO: source other than Vybihal here^^
-
+% TODO: source other than Vybihal (background thinking)
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figures/backwards_thinking.pdf}
@@ -210,6 +211,17 @@ This type of thinking occurs in humans when using analogical reasoning to solve 
 \end{figure}
 
 All forms of thinking can continue until there are no more Knowledge Nodes to activate, which corresponds to natural quiescence. There can also be a fixed number of cycles through the list of active tags. This fixed cycle number represents how much effort is being put into thinking. Indeed, in animals, most thinking is never done at 100\% effort, and it would be interesting to model this.
+% TODO: source (thinking effort)
+
+There is a strength value associated with every Knowledge Node which represents how much weight an activation has and therefore how quickly that node will fire. A simple implementation of strength would be as a constant coefficient multiplying each activation increment. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$.
+
+Confidence was mentioned earlier in the context of thinking backwards. This concept can however extend beyond this context. Indeed, every individual Knowledge Node can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. These confidence values can come from the NN, since a neural network will always have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other, making the KNN less certain of a memory as it searches through its tree of Knowledge Nodes. This represents memories in the human brain require a great deal of thinking to reach and, as such, are less certain than other memories.
+% TODO: source (certainty of memories)
+
+Age represents how long it has been since a Knowledge Node has been excited. The idea is that, after a Knowledge Node has aged a certain amount of time, that node will be discarded, similarly to how old memories are discarded in the brain.
+% TODO: source (aging)
+
+The intuitive implementation of aging is to constantly increment some age value associated with every Knowledge Node, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every Knowledge Node when it is excited, and if the KNN attempts to excite a Knowledge Node whose previous timestamp value is too far into the past, that node is instead deleted.
 
 \subsection{Expert System}
 
@@ -505,11 +517,14 @@ UML diagrams of every package in the code base were created.
 
 \section{Plan for Next Semester}
 % In this section you should describe a plan for next semester. What tasks remain to be done, and what is the timeline for accomplishing these tasks? Furthermore you can describe how you plan to test your design in order to make sure it meets the desired specifications. Also outline the design decisions that are required in order to make sure that the final product can be tested.
-% TODO: Maybe include schedule
+
+% TODO: Maybe include schedule (GANTT chart)
 
 The plan for next semester is to finalize the two layers that were started this semester, and to test them on the robots available in Prof. Vybihal's lab.
 
 \subsection{Finalization}
+
+First, the KNN and ES will need to be finalized. It is expected that this will take up the first month of next semester.
 
 \subsubsection{Knowledge Node Network}
 
@@ -521,21 +536,29 @@ Some thought still needs to be put into the specifics on implementation of lambd
 
 Confidence values will probably be associated with every individual \code{Tag}, as well as in an absolute sense in the KNN. Activation through the layers of the KNN can theoretically then reduce the absolute confidence that the output \code{Tags} are true, since at every step the confidence should be multiplied with the previous value.
 
-The intuitive implementation of aging is to constantly increment some age value associated with every Knowledge Node, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every Knowledge Node when it is excited, and if the KNN attempts to excite a Knowledge Node whose previous timestamp value is too far into the past, that node is instead deleted.
+Aging is also still left to be implemented, with a timestamp system as described in \autoref{sec:background}.
 
 Activation of Knowledge Nodes with sigmoid functions can also be looked into. This can be easily implemented using a cache of known sigmoid values.
 
 Also, more thought will have to be put into the design of the KNN to allow cyclic graphs, representing recursive memories in the human brain.
 
+Finally, there will be more features to be added in the KNN which are not described in \autoref{sec:background}, since they are still in the process of being thought out. One of these features is how the KNN will learn.
+
 \subsubsection{Expert System}
 
-Some features of the ES layer are still to be implemented, such as more complex Fact checking.
+Some features of the ES layer are still to be implemented, such as more complex \code{Fact} checking. Indeed, currently, the ES only checks for strict equality between \code{Facts}, but it would be interesting to implement checking for ``greater than" or ``less than" relations as well.
 
 \subsection{Integration}
 
 One very important task left to be done is to integrate the two layers described in this report (ES and KNN) with the other layers developed separately (NN and META). Ideally, the layers should be able to work together, but there will surely be some conflicts at the interface of the layers. These will have to be resolved when the time comes.
 
+Most notably, the interface between the NN and the KNN will have to be tested. There may have to be some conversion between what the NN will output and what the KNN expects (\code{Tags}).
+
+The integration section is expected to take around 2 months, with the the first month overlapping with the finalization section.
+
 \subsection{Testing}
+
+Finally, the system will have to be tested. This is expected to take around 2 months, with the first month overlapping with the last month of integration.
 
 \subsubsection{Simulation}
 
@@ -568,17 +591,25 @@ One example of use that may cause ethical concern is in a military setting, wher
 
 In the very long term, there are concerns with the possibility that an AI system might achieve intelligence and awareness close to a human. If such an AI were to obtain ``consciousness'' in its own way, should that entity be entitled to its own rights, like humans do?
 
+% TODO: source (ethics of AI)
+
 \subsection{Benefits to Society}
 % Quality of life, economic benefits, etc.
 
+This type of system could be extremely useful in many contexts in society.
+
 Going back to the example use case in a radioactive disaster, the system could be used to send robots in an area that would otherwise be very dangerous for humans. This would therefore help prevent the unnecessary loss of life in cleaning up these leaks.
+
+% TODO: source (AI in nuclear disaster)
+
+The system could also be used to further space exploration, with an intelligent AI controlling multiple robots exploring the surface of Mars, for instance. The value of AI in this context has been clearly shown, with the Mars Curiosity rover recently being upgraded to have its own AI system using computer vision to identify rocks \cite{rover}.
 
 \section{Conclusion}
 % Use this section to summarize what was accomplished in this semester, provide a summary of the next steps and share any insight you have learned.
 
 This semester, prototypes of the Expert System (ES) and Knowledge Node Network (KNN) layers of the AI model were completed in Java. These prototypes were tested individually and together, with positive results.
 
-The main goal for next semester is to finalize the entire system, implementing more complex features that were omitted for this prototype stage.
+The main goal for next semester is to finalize the entire system, implementing more complex features that were omitted for this prototype stage. This will also require proper integration between the work done in this report (KNN and ES), and outside this report (NN and META).
 
 \clearpage
 \onecolumn

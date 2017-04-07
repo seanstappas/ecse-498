@@ -21,11 +21,8 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{vybihal-perceptron}
-J.~Vybihal, ``Perceptron learning,'' 2016.
-
 \bibitem{vybihal-knowledge}
-------, ``Knowledge nodes,'' 2017.
+J.~Vybihal, ``Knowledge nodes,'' 2017.
 
 \bibitem{vybihal-lambda}
 J.~Vybihal and T.~R. Shultz, ``Search in analogical reasoning,'' 1990.
@@ -36,5 +33,10 @@ J.~Vybihal, ``Expert systems,'' 2016.
 \bibitem{simbad}
 ``Simbad 3d robot simulator,'' \url{http://simbad.sourceforge.net/index.php},
   (Accessed on 03/27/2017).
+
+\bibitem{rover}
+``How does mars rover curiosity's new ai system work? | astronomy.com,''
+  \url{http://www.astronomy.com/news/2016/08/how-does-mars-rover-curiositys-new-ai-system-work},
+  (Accessed on 04/07/2017).
 
 \end{thebibliography}
