@@ -4,9 +4,9 @@
 \contentsline {figure}{\numberline {4}{\ignorespaces Thinking backwards in the KNN.\relax }}{6}{figure.caption.11}
 \contentsline {figure}{\numberline {5}{\ignorespaces Lambda thinking in the KNN.\relax }}{6}{figure.caption.12}
 \contentsline {figure}{\numberline {6}{\ignorespaces Prometheus AI model with labeled input and output.\relax }}{8}{figure.caption.13}
-\contentsline {figure}{\numberline {7}{\ignorespaces Setup for the \texttt {testKNN()} method.}}{13}{figure.caption.14}
-\contentsline {figure}{\numberline {8}{\ignorespaces Fall 2017 timeline.\relax }}{14}{figure.caption.17}
-\contentsline {figure}{\numberline {A.1}{\ignorespaces UML diagram of the \texttt {tags} package.\relax }}{16}{figure.caption.18}
-\contentsline {figure}{\numberline {A.2}{\ignorespaces UML diagram of the \texttt {knn} package.\relax }}{16}{figure.caption.19}
-\contentsline {figure}{\numberline {A.3}{\ignorespaces UML diagram of the \texttt {es} package.\relax }}{17}{figure.caption.20}
-\contentsline {figure}{\numberline {A.4}{\ignorespaces UML diagram of the \texttt {test} package.\relax }}{17}{figure.caption.21}
+\contentsline {figure}{\numberline {7}{\ignorespaces Setup for the \texttt {testKNN()} method.}}{13}{figure.caption.23}
+\contentsline {figure}{\numberline {8}{\ignorespaces Fall 2017 timeline.\relax }}{14}{figure.caption.26}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces UML diagram of the \texttt {tags} package.\relax }}{17}{figure.caption.27}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces UML diagram of the \texttt {knn} package.\relax }}{17}{figure.caption.28}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces UML diagram of the \texttt {es} package.\relax }}{18}{figure.caption.29}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces UML diagram of the \texttt {test} package.\relax }}{18}{figure.caption.30}

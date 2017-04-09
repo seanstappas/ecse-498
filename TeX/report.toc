@@ -26,12 +26,12 @@
 \contentsline {subsubsection}{\numberline {6.1.1}Knowledge Node Network}{14}{subsubsection.6.1.1}
 \contentsline {subsubsection}{\numberline {6.1.2}Expert System}{14}{subsubsection.6.1.2}
 \contentsline {subsection}{\numberline {6.2}Integration}{14}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Testing}{14}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.3}Testing}{15}{subsection.6.3}
 \contentsline {section}{\numberline {7}Impact on Society and the Environment}{15}{section.7}
 \contentsline {subsection}{\numberline {7.1}Use of Non-renewable Resources}{15}{subsection.7.1}
 \contentsline {subsection}{\numberline {7.2}Environmental Benefits}{15}{subsection.7.2}
 \contentsline {subsection}{\numberline {7.3}Safety and Risk}{15}{subsection.7.3}
 \contentsline {subsection}{\numberline {7.4}Benefits to Society}{15}{subsection.7.4}
 \contentsline {section}{\numberline {8}Conclusion}{15}{section.8}
-\contentsline {section}{\numberline {A}UML Diagrams}{16}{appendix.A}
-\contentsline {section}{References}{18}{section*.22}
+\contentsline {section}{\numberline {A}UML Diagrams}{17}{appendix.A}
+\contentsline {section}{References}{19}{section*.31}

@@ -355,6 +355,7 @@ Without a parameter, the \code{think()} method runs to natural quiescence. There
 Currently, only the \code{thinkForwards()} method is fully completed. The version of the method that runs until quiescence can be seen in \autoref{lst:thinkForwards}.
 
 \lstinputlisting[
+float=!htb,
 firstline=163,
 lastline=171,
 caption=Thinking forwards until natural quiescence in the KNN.,
@@ -366,6 +367,7 @@ label=lst:thinkForwards
 The version of \code{thinkForwards()} with a fixed number of thinking cycles can be seen in \autoref{lst:thinkForwardsThreshold}.
 
 \lstinputlisting[
+float=!htb,
 firstline=179,
 lastline=189,
 caption=Thinking forwards for a fixed number of cycles in the KNN.,
@@ -374,20 +376,23 @@ label=lst:thinkForwardsThreshold
 	\knnpath
 }
 
-One can see that both \code{thinkForwards()} methods repeatedly call \code{forwardThinkCycle()}, which can be seen in \autoref{lst:forwardThinkCycle}. This method is where \code{Tags} can become active (line 9), being added into the \code{activeTags} \code{Set}.
-
 \lstinputlisting[
+float=!htb,
 firstline=196,
 lastline=206,
 caption=Single cycle of thinking forwards in the KNN.,
 label=lst:forwardThinkCycle
 ]{
-	\knnpath
+\knnpath
 }
+
+One can see that both \code{thinkForwards()} methods repeatedly call \code{forwardThinkCycle()}, which can be seen in \autoref{lst:forwardThinkCycle}. This method is where \code{Tags} can become active (line 9), being added into the \code{activeTags} \code{Set}.
+
 
 One can see that the \code{forwardThinkCycle()} calls an \code{excite()} method on line 5 to excite a \code{KnowledgeNode}. This method returns the \code{Tags} activated as a result of excitation. The code can be seen in \autoref{lst:excite}.
 
 \lstinputlisting[
+float=!htb,
 firstline=214,
 lastline=221,
 caption=Method to excite a Knowledge Node.,
@@ -399,6 +404,7 @@ label=lst:excite
 This method, in turn, may call a \code{fire()} method on line 5 to fire the \code{KnowledgeNode} and activate its output tags. It returns all the \code{Tags} to be activated as a result of firing that \code{KnowledgeNode}. The code can be seen in \autoref{lst:fire}.
 
 \lstinputlisting[
+float=!htb,
 firstline=229,
 lastline=237,
 caption={Method to fire a Knowledge Node, activating its output tags.},
@@ -427,6 +433,7 @@ The most important method in the \code{ExpertSystem} is \code{think()}, which im
 Without a parameter, the \code{think()} method runs to natural quiescence. This can be seen in \autoref{lst:think}.
 
 \lstinputlisting[
+float=!htb,
 firstline=153,
 lastline=166,
 caption=Thinking until natural quiescence in the ES.,
@@ -438,6 +445,7 @@ label=lst:think
 There is also an overloaded version of \code{think()} that functions similarly to that of the \code{KnowledgeNodeNetwork}. This can be seen in \autoref{lst:thinkThreshold}. Both variants of \code{think()} return the \code{Set} of \code{Recommendations} that become active as a result of thinking, which is passed on to the META.
 
 \lstinputlisting[
+float=!htb,
 firstline=178,
 lastline=192,
 caption=Thinking with a fixed number of cycles in the ES.,
@@ -449,6 +457,7 @@ label=lst:thinkThreshold
 Both versions of \code{think()} call a method named \code{thinkCycle()} representing a single cycle of thinking. The code for this method can be seen in \autoref{lst:thinkCycle}.
 
 \lstinputlisting[
+float=!htb,
 firstline=202,
 lastline=227,
 caption=A single cycle of thinking in the ES.,
@@ -460,6 +469,7 @@ label=lst:thinkCycle
 Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} method on line 21, which adds a \code{Tag} to the ES depending on its type. The code can be seen in \autoref{lst:addTag}. The method is \code{public} because it could be used by a user of the ES to set the initial data structures. It returns \code{true} if the \code{Tag} is added successfully. The \code{addRule()}, \code{addFact()}, and \code{addRecommendation} methods simply add a \code{Tag} to the \code{readyRules}, \code{facts}, or \code{recommendations} \code{Sets}, respectively, and return \code{true} if the ES did not already contain the \code{Tag} to be added.
 
 \lstinputlisting[
+float=!htb,
 firstline=55,
 lastline=65,
 caption=Method to add a Tag to the ES.,
@@ -589,37 +599,40 @@ One the simulation testing is completed and working properly, the system can be 
 \subsection{Use of Non-renewable Resources}
 % Consider all stages of the product from design, manufacturing, distribution, use by consumers, and disposal/recycling.
 
-As purely a software project, there are no physical materials needed to construct this system. The only physical resources potentially needed are those to construct whatever computers needed to run the code, and the materials needed to construct the robots to test on.
+As purely a software project, there are no physical materials needed to construct this system. The only physical resources potentially needed the materials needed to construct the robots to test on. More emphasis will be put on the other sections here.
 % TODO: non-renewable here (silicon, for robots)?
 % TODO: say more emphasis on other sections
 
 \subsection{Environmental Benefits}
 % Benefits to the environment, comparisons with more polluting technologies etc.
 
-The system could be used as a tool to control robots in dangerous environments such as nuclear plants after a radioactive disaster. Indeed, the system could coordinate robots to help contain the damage faster than humans could, thus limiting the risk on the environment.
-% TODO: source (risk in nuclear plant disaster)
+The system could be used as a tool to control robots in dangerous environments such as oil spills. Theoretically, the robots could contain the problem faster than humans and thus limit the risk on the environment.
+% TODO: oil spill example?
 
 \subsection{Safety and Risk}
 % To you undertaking the project, as well as to any potential users of the solution once it is finished.
 
 It is critical that, once this system is completed, it is used in an ethical way, and for the right purposes.
 
+% TODO: source (ethics of AI)
+
 One example of use that may cause ethical concern is in a military setting, where an AI system like the one described here could be used in a battlefield in place of soldiers.
 
 In the very long term, there are concerns with the possibility that an AI system might achieve intelligence and awareness close to a human. If such an AI were to obtain ``consciousness'' in its own way, should that entity be entitled to its own rights, like humans do?
+
+Another possible issue is the future loss of jobs to be done by humans, with automated systems like Prometheus replacing physical labor. This problem can be solved as a society, perhaps by having more support for common universal income.
+
 % TODO: Job losses with AI
-% TODO: source (ethics of AI)
+% TODO: Reorganize society with high-level thinking, common salary
 
 \subsection{Benefits to Society}
 % Quality of life, economic benefits, etc.
 
 This type of system could be extremely useful in many contexts in society.
 
-Going back to the example use case in a radioactive disaster, the system could be used to send robots in an area that would otherwise be very dangerous for humans. This would therefore help prevent the unnecessary loss of life in cleaning up these leaks.
-% TODO: source (AI in nuclear disaster)
+The system could be used to send robots in an area that would otherwise be very dangerous for humans. This would therefore help prevent the unnecessary loss of life in cleaning up these leaks. Indeed, even in the Chernobyl nuclear disaster, the Soviet authorities employed the use of robots to avoid unnecessary loss of human life \cite{chernobyl}.
 
 The system could also be used to further space exploration, with an intelligent AI controlling multiple robots exploring the surface of Mars, for instance. The value of AI in this context has been clearly shown, with the Mars Curiosity rover recently being upgraded to have its own AI system using computer vision to identify rocks \cite{rover}. This system can therefore help further important cutting edge research in space exploration.
-% TODO: Reorganize society with high-level thinking, common salary
 
 \section{Conclusion}
 % Use this section to summarize what was accomplished in this semester, provide a summary of the next steps and share any insight you have learned.
