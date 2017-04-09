@@ -6,32 +6,32 @@
 \contentsline {subsection}{\numberline {2.2}Knowledge Node Network}{4}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Expert System}{7}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Meta Reasoner}{7}{subsection.2.4}
-\contentsline {subsection}{\numberline {2.5}Summary}{7}{subsection.2.5}
-\contentsline {section}{\numberline {3}Problem}{7}{section.3}
+\contentsline {subsection}{\numberline {2.5}Summary}{8}{subsection.2.5}
+\contentsline {section}{\numberline {3}Problem}{8}{section.3}
 \contentsline {section}{\numberline {4}Design Criteria}{8}{section.4}
 \contentsline {subsection}{\numberline {4.1}Efficiency}{8}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Object Oriented Design}{8}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Abstraction}{8}{subsubsection.4.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2}Encapsulation}{8}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Abstraction}{9}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Encapsulation}{9}{subsubsection.4.2.2}
 \contentsline {subsubsection}{\numberline {4.2.3}Polymorphism}{9}{subsubsection.4.2.3}
 \contentsline {subsubsection}{\numberline {4.2.4}Inheritance}{9}{subsubsection.4.2.4}
 \contentsline {section}{\numberline {5}Implementation}{9}{section.5}
 \contentsline {subsection}{\numberline {5.1}Tags}{9}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Knowledge Node Network}{9}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.2}Knowledge Node Network}{10}{subsection.5.2}
 \contentsline {subsection}{\numberline {5.3}Expert System}{11}{subsection.5.3}
 \contentsline {subsection}{\numberline {5.4}Testing}{12}{subsection.5.4}
-\contentsline {subsection}{\numberline {5.5}Documentation}{12}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.5}Documentation}{14}{subsection.5.5}
 \contentsline {section}{\numberline {6}Plan for Next Semester}{14}{section.6}
 \contentsline {subsection}{\numberline {6.1}Finalization}{14}{subsection.6.1}
 \contentsline {subsubsection}{\numberline {6.1.1}Knowledge Node Network}{14}{subsubsection.6.1.1}
-\contentsline {subsubsection}{\numberline {6.1.2}Expert System}{14}{subsubsection.6.1.2}
-\contentsline {subsection}{\numberline {6.2}Integration}{14}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.1.2}Expert System}{15}{subsubsection.6.1.2}
+\contentsline {subsection}{\numberline {6.2}Integration}{15}{subsection.6.2}
 \contentsline {subsection}{\numberline {6.3}Testing}{15}{subsection.6.3}
 \contentsline {section}{\numberline {7}Impact on Society and the Environment}{15}{section.7}
 \contentsline {subsection}{\numberline {7.1}Use of Non-renewable Resources}{15}{subsection.7.1}
 \contentsline {subsection}{\numberline {7.2}Environmental Benefits}{15}{subsection.7.2}
 \contentsline {subsection}{\numberline {7.3}Safety and Risk}{15}{subsection.7.3}
-\contentsline {subsection}{\numberline {7.4}Benefits to Society}{15}{subsection.7.4}
-\contentsline {section}{\numberline {8}Conclusion}{15}{section.8}
+\contentsline {subsection}{\numberline {7.4}Benefits to Society}{16}{subsection.7.4}
+\contentsline {section}{\numberline {8}Conclusion}{16}{section.8}
 \contentsline {section}{\numberline {A}UML Diagrams}{17}{appendix.A}
 \contentsline {section}{References}{19}{section*.31}

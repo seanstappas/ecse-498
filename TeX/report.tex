@@ -101,7 +101,7 @@ Prometheus AI is a model of the human brain with the goal of controlling multipl
 
 \section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
-Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in parallel with the work done in this report. She is also doing this project as part of an Honours Thesis. Many discussions were had together on the design of the system and how our components should fit together.
+Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in parallel with the work done in this report. She is also doing this project as part of an Honours Thesis. Many discussions were had together on the design of the system and how the layers should fit together.
 
 \clearpage
 \tableofcontents
@@ -150,8 +150,8 @@ The NN layer consists of a network of neurons with a similar structure to neuron
 The NN gathers raw sensor data and will build an abstract view of the robot's surrounding environment. It will analyze the contents of the camera image and achieve two main goals:
 
 \begin{enumerate}
-	\item Classify objects observed in the image
-	\item Localize objects in the image
+	\item Classify objects observed in the image.
+	\item Localize objects in the image.
 \end{enumerate}
 
 To achieve these goals, a convolutional neural network will be used, which can determine which regions of the image are important and classify objects in those regions \cite{conv}. A 3D view of the world will also be generated. Using ultrasonic sensor readings and coordinate transformations from the world to the camera images, the observed objects can be localized in space.
@@ -162,7 +162,7 @@ Ultimately, the classification and localization of objects will produce abstract
 
 The KNN layer represents memory in the human brain. It takes in the tags provided by the NN and outputs tags based on its knowledge of the environment. These output tags can be simple facts, such as ``I see a wall'', recommendations for future actions such as ``turn left'', or rules, which will be described in the ES section. These tags are passed on to the ES.
 
-The KNN is based around the Knowledge Node, which is an abstract structure representing a memory and its connections to other memories. A simple model of a Knowledge Node can be seen in \ar{kn}.
+The KNN is based around interconnected Knowledge Nodes, which are abstract structures representing memories and their connections to other memories. A simple model of a Knowledge Node can be seen in \ar{kn}.
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figures/kn.pdf}
@@ -171,11 +171,13 @@ The KNN is based around the Knowledge Node, which is an abstract structure repre
 	\label{kn}
 \end{figure}
 
-In its simplest form, the Knowledge Node can be excited by an activated input tag, which increments its activation parameter, which initially starts at 0. If the activation parameter is greater than the node's threshold, the Knowledge Node fires, causing the activation of the output tags. This description corresponds to forwards thinking with linear activation. The activation can also be with a sigmoid function, which is more representative of neurons in the brain \cite{neuro}.
+Knowledge Nodes have an input tag representing some information, and output tags representing information related to the input tag. Tags in the KNN can become ``active'', meaning that they are observed or seen as true. For example, if the NN determines that it observes a ball and passes that information on to the KNN, then a ``ball'' tag may become active in the KNN. This would excite the Knowledge Node with input tag ``ball''. If that Knowledge Node fires, other tags related to that observation can become active. For example, tags representing ball characteristics such as ``round object'' may become active. This tag in turn may be connected to another Knowledge Node, potentially causing more activation.
+
+There are different ways a Knowledge Node can be excited. With simple linear activation, an excitation would increment the node's activation parameter, which initially starts at 0. If $activation \geq threshold$, the Knowledge Node fires, causing the activation of the output tags. This description corresponds to forwards thinking. The activation can also be with a sigmoid function, which is more representative of neurons in the brain \cite{neuro}.
 
 % TODO: talk more about relation to neurons in brain, and ways to leverage this
 
-There is a strength value associated with every Knowledge Node which represents how much weight an activation has and therefore how quickly that node will fire. A simple implementation of strength would be as a constant coefficient multiplying each activation increment. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$, where the strength is positive. The strength value could be 0 however, which effectively shuts off the Knowledge Node. Another way of implementing strength is to check $activation + strength \geq threshold$. In this case, strength can be negative and hinder the firing of the node.
+There is a strength value associated with every Knowledge Node which represents how much weight an activation has and therefore how quickly that node will fire. A simple implementation of strength would be as a constant coefficient multiplying the activation parameter. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$, where the strength is positive. The strength value could be 0 however, which effectively shuts off the Knowledge Node. Another way of implementing strength is to check $activation + strength \geq threshold$. In this case, strength can be negative and hinder the firing of the node.
 
 Strength can be seen as the firing predisposition of neurons in the brain as a result of learning \cite{vybihal-knowledge}. Indeed, learning can increase the synaptic strength between neurons and cause early or late firing of those neurons \cite{hebb}. For example, a person who has had a bad experience with spiders would fire their fear response upon seeing a spider more quickly than one without that fear.
 
@@ -183,7 +185,7 @@ Every Knowledge Node can have a confidence value associated with it, representin
 
 Age represents how long it has been since a Knowledge Node has been excited. The idea is that, after a Knowledge Node has aged a certain amount of time, that node will be discarded, similarly to how old memories are discarded in the brain \cite{aging}. The intuitive implementation of aging is to constantly increment some age value associated with every Knowledge Node, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every Knowledge Node when it is excited, and if the KNN attempts to excite a Knowledge Node whose previous timestamp value is too far into the past, that node is instead deleted.
 
-The KNN has three main ways of thinking: forwards, backwards, and lambda. The version of thinking to be done by the KNN is chosen by the META.
+Thinking in the KNN represents an activation routine, activating tags and potentially firing Knowledge Nodes. The KNN has three main ways of thinking: forwards, backwards, and lambda. The version of thinking to be done by the KNN is chosen by the META.
 
 Forwards thinking is the simplest and is depicted in \autoref{think_forwards}. Firing a Knowledge Node can cause forward activation of more Knowledge Nodes, hence the ``forwards'' naming.
 
@@ -193,11 +195,9 @@ Forwards thinking is the simplest and is depicted in \autoref{think_forwards}. F
 	\label{think_forwards}
 \end{figure}
 
-Thinking backwards starts at the output tags of Knowledge Nodes, and works backwards, as can seen in \autoref{think_backwards}. In its simplest form, it checks output tags of Knowledge Nodes and, if all of them are active, the input tag must be active as well, so that Knowledge Node is activated.
+Thinking backwards starts at the output tags of Knowledge Nodes, and works backwards, as can seen in \autoref{think_backwards}. In its simplest form, it checks output tags of Knowledge Nodes and, if all of them are active, the input tag must be active as well, so that Knowledge Node is fired.
 
-This type of thinking can be a bit more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node activate when all its output nodes are active (100\%), or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with some uncertainty \cite{uncertainty} and this is what can be represented with this type of backwards thinking.
-
-This type of thinking occurs constantly in the background in humans \cite{vybihal-knowledge}, and this is something to keep in mind during implementation.
+This type of thinking can be more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node fire when 100\% of its output nodes are active, or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with some uncertainty \cite{uncertainty} and this is what can be represented with backwards thinking. This type of thinking occurs constantly in the background in humans \cite{vybihal-knowledge}, and this is something to keep in mind during implementation.
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figures/backwards_thinking.pdf}
@@ -215,13 +215,13 @@ Lambda thinking uses a combination of forwards and backwards, and can be seen in
 
 This type of thinking occurs in humans when using analogical reasoning to find a memory \cite{vybihal-lambda}. In essence, when a person wants to locate a memory that is not directly accessible, they will explore related memories, move their way ``backwards'' to concepts related to the desired memory, and think ``forwards'' to focus in on the desired memory. For example, if one is asked where they were in 2002 at a specific date, they most likely would not remember. If they explore related dates and events in their life, however, they may be able to narrow down and extract that memory. In the context of the Prometheus system, lambda thinking will be attempted if all other forms of thinking fail (forwards and backwards).
 
-All forms of thinking can continue until there are no more Knowledge Nodes to activate, which corresponds to natural quiescence. There can also be a fixed number of cycles through the list of active tags. This fixed cycle number represents how much effort is being put into thinking. Indeed, in humans, thinking is done with varying degrees of effort \cite{thinking}, and it would be interesting to model this.
+All forms of thinking can continue until there are no more Knowledge Nodes to activate, which corresponds to natural quiescence. There can also be a fixed number of thinking cycles, which represents how much effort is being put into thinking. Indeed, in humans, thinking is done with varying degrees of effort \cite{thinking}, and it would be interesting to model this.
 
 \subsection{Expert System}
 
-The ES layer is a basic logic reasoner. It is not aware of its current reality, or any context. It takes in the tags provided by the KNN and interprets them as either facts, recommendations or rules.
+The ES layer is a basic logic reasoner. It is not aware of its current reality or any context. It takes in the tags provided by the KNN and interprets them as either facts, recommendations or rules.
 
-Facts are simple calculus predicates showing that something is true. Here are some examples of fact tags when implemented as strings and their meanings:
+Facts are simple calculus predicates showing that something is true. Here are some examples of fact tags and their meanings:
 
 \begin{labeling}{$(A > 1)$}
 	\item[$(A)$] $A$ itself is true or active.
@@ -234,34 +234,38 @@ As a more concrete example, a fact can represent a certain measurement, like $(d
 
 Recommendations represent suggestions for actions to be taken by a robot. For example, $(\#turn\_left)$ is a recommendation for a robot to turn left, if it sees a wall directly in front of it and must avoid it, for example. These are recommendations and not commands because the META can decide whether or not to actually take that action.
 
-Rules are a many-to-many structure with facts as inputs and recommendations or facts as outputs. When all the input tags become active, the output tags become active and the rule itself is also said to be active. In this way, a rule can represent a logical AND of all its input tags.
+Rules are many-to-many structures with facts as inputs and recommendations or facts as outputs. This can be seen in \autoref{eq:rule}, where $m \geq 1$ and $n \geq 1$, i.e., there must be at least one input tag and one output tag. 
 
-The runtime of the ES consists of the following general steps \cite{vybihal-expert}:
+\begin{equation} \label{eq:rule}
+Fact_1 \cdots Fact_m \rightarrow Tag_1 \cdots Tag_n
+\end{equation}
+
+When all the input tags become active, the output tags become active and the rule itself is also said to be active. In this way, a rule can represent a logical AND of all its input tags. The runtime of the ES consists of the following general steps \cite{vybihal-expert}:
 
 \begin{enumerate}
-	\item Reset
-	\item Add facts and rules
-	\item Think
-	\item Send recommendations to META
+	\item Reset.
+	\item Add facts and rules.
+	\item Think.
+	\item Send recommendations to META.
 \end{enumerate}
 
-The most important part of the previous process is the thinking stage, which consists of first iterating through all the rules in the ES and checking if they are active by inspecting the lists of facts and recommendations. Rules may then become active and cause cascading activation of more rules. This can continue until there are no more rules to activate, which corresponds to natural quiescence. There can also be a fixed threshold to the number of possible cycles through the lists of facts and recommendations. In this sense, this limit represents the effort put into thinking, similarly to the KNN.
+The most important part of the previous process is the thinking stage, which represents the activation routine of the ES. This consists of first iterating through all the rules in the ES and checking if they are active by inspecting the lists of facts and recommendations. Rules may then become active and cause cascading activation of more rules. This can continue until there are no more rules to activate, which corresponds to natural quiescence. There can also be a fixed number of thinking cycles, which represents the effort put into thinking, similarly to the KNN.
 
-These recommendations are passed on to the final layer, the Meta Reasoner (META).
+The recommendations activated as a result of thinking are passed on to the final layer, the Meta Reasoner (META).
 
 \subsection{Meta Reasoner}
 
 The META layer represents high-level reasoning in human brains. It is aware of its environment and context, and makes decisions based on what it believes to be right. It is paranoid, and constantly checks whether the tags reported by the rest of the AI system make sense based on its expected view of the world. If it decides to make a decision, it sends a command to the actuators of the robots to decide how to move. If it is not happy with the recommendation(s) from the ES, it may initiate another think cycle in the KNN to generate new recommendations(s).
-
-\subsection{Summary}
-
-With this full description of the Prometheus AI model, the system with labeled input and output can be seen in \autoref{model_labeled}.
 
 \begin{figure*}[!htb]
 	\includegraphics[width=\textwidth]{figures/ai_model_labeled.pdf}
 	\caption{Prometheus AI model with labeled input and output.}
 	\label{model_labeled}
 \end{figure*}
+
+\subsection{Summary}
+
+With this full description of the Prometheus AI model, the system with labeled input and output can be seen in \autoref{model_labeled}.
 
 \section{Problem}
 % In this section you should describe the problem or system you are addressing in detail. Describe the project requirements and constraints.
@@ -275,13 +279,11 @@ As a deliverable for the end of this first semester, it was required to complete
 
 \subsection{Efficiency}
 
-A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimulus in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java \code{Sets} for most of the collections in the ES and KNN layers. The original specifications mentioned using \code{ArrayLists}, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to \code{Sets}.
-
-When designing every algorithm in the system, the first criterion in mind is speed. Indeed, for the \code{think()} methods of the ES and KNN, it was important to think about the right way to leverage all the available data structures to maximize speed.
+A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimulus in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java \code{Sets} for most of the collections in the ES and KNN layers. The original specifications mentioned using \code{ArrayLists}, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to \code{HashSets}. This is faster because \code{HashSets} have $O(1)$ access time, whereas \code{ArrayLists} have $O(N)$, where N is the size of the list. \code{HashSets} also have the advantage of only permitting unique elements.
 
 \subsection{Object Oriented Design}
 
-Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, the ES and KNN will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
+Another important choice is to leverage object-oriented design as much as possible. Object-oriented programming (OOP) allows extensive planning before even beginning to write code, which can identify any flaws in the initial design. It also allows the code to be very clean and reusable \cite{oop}. Since Java is the programming language chosen for the project, OOP is also the natural way to proceed. To follow OOP, the ES and KNN will be designed around Java classes and the methods associated with those classes. OOP principles such as polymorphism and encapsulation will be followed closely.
 
 \subsubsection{Abstraction}
 
@@ -332,8 +334,8 @@ All code relating directly to the KNN was placed in the \code{knn} package of th
 The KNN layer is based around the \code{KnowledgeNodeNetwork} Java class. This class has the following fields:
 
 \begin{labeling}{\code{activeTags}}
-	\item[\code{mapKN}] \code{Map} of input \code{Tags} to associated \code{KnowledgeNodes}
-	\item[\code{activeTags}] \code{Set} of active \code{Tags}, corresponding to input \code{Tags} of fired \code{KnowledgeNodes}
+	\item[\code{mapKN}] One-to-one \code{HashMap} of input \code{Tags} to associated \code{KnowledgeNodes}.
+	\item[\code{activeTags}] \code{HashSet} of active \code{Tags}, corresponding to input \code{Tags} of fired \code{KnowledgeNodes}.
 \end{labeling}
 
 The \code{KnowledgeNode} class implements the functionality of a Knowledge Node, which has the following important fields to implement the functionality described in \autoref{sec:background}:
@@ -343,16 +345,14 @@ The \code{KnowledgeNode} class implements the functionality of a Knowledge Node,
 	\item[\code{outputTags}] \code{Array} of output \code{Tags}.
 	\item[\code{activation}] \code{int} starting at 0, incrementing when the \code{KnowledgeNode} is excited.
 	\item[\code{threshold}] \code{int} threshold such that \code{activation $\geq$ threshold} causes firing of the \code{KnowledgeNode}.
-	\item[\code{strength}] \code{int} that biases the activation of a \code{KnowledgeNode}, causing early firing. If \code{activation * strength $\geq$ threshold} then fire the \code{KnowledgeNode}.
+	\item[\code{strength}] \code{int} that biases the activation of a \code{KnowledgeNode}, causing early firing. If \code{activation * strength $\geq$ threshold}, then fire the \code{KnowledgeNode}.
 	\item[\code{confidence}] \code{int} representing the belief that \code{inputTag} is true (0 to 100).
 	\item[\code{age}] \code{int} representing the age of the \code{KnowledgeNode}.
 \end{labeling}
 
-The most important method in the \code{KnowledgeNodeNetwork} is \code{think()}, which chooses either \code{thinkForwards()}, \code{thinkBackwards()}, or \code{thinkLambda()}. These methods implement the functionality described in \ar{sec:background} and return the \code{Tags} activated as a result of thinking.
+The most important method in the \code{KnowledgeNodeNetwork} is \code{think()}, which chooses either \code{thinkForwards()}, \code{thinkBackwards()}, or \code{thinkLambda()}. These methods implement the functionality described in \ar{sec:background} and return the \code{Tags} activated as a result of thinking. At this point, \code{think()} chooses \code{thinkForwards()} by default. In the future, the choice will be determined by META (see \autoref{sec:plan}).
 
 Without a parameter, the \code{think()} method runs to natural quiescence. There is also an overloaded version of \code{think()} that takes an \code{int} \code{numberOfCycles} as a parameter. This parameter represents the thinking effort described earlier. Similarly, \code{thinkForwards()}, \code{thinkBackwards()}, and \code{thinkLambda()} all have overloaded versions with \code{numberOfCycles} as a parameter.
-
-Currently, only the \code{thinkForwards()} method is fully completed. The version of the method that runs until quiescence can be seen in \autoref{lst:thinkForwards}.
 
 \lstinputlisting[
 float=!htb,
@@ -364,8 +364,6 @@ label=lst:thinkForwards
 	\knnpath
 }
 
-The version of \code{thinkForwards()} with a fixed number of thinking cycles can be seen in \autoref{lst:thinkForwardsThreshold}.
-
 \lstinputlisting[
 float=!htb,
 firstline=179,
@@ -376,6 +374,8 @@ label=lst:thinkForwardsThreshold
 	\knnpath
 }
 
+Currently, only the \code{thinkForwards()} method is fully completed. The version that runs until natural quiescence can be seen in \autoref{lst:thinkForwards}. The version with a fixed number of thinking cycles can be seen in \autoref{lst:thinkForwardsThreshold}. One can see that both \code{thinkForwards()} methods call \code{forwardThinkCycle()}, which can be seen in \autoref{lst:forwardThinkCycle}. This is where \code{Tags} can become active (line 9), being added into \code{activeTags}.
+
 \lstinputlisting[
 float=!htb,
 firstline=196,
@@ -383,13 +383,10 @@ lastline=206,
 caption=Single cycle of thinking forwards in the KNN.,
 label=lst:forwardThinkCycle
 ]{
-\knnpath
+	\knnpath
 }
 
-One can see that both \code{thinkForwards()} methods repeatedly call \code{forwardThinkCycle()}, which can be seen in \autoref{lst:forwardThinkCycle}. This method is where \code{Tags} can become active (line 9), being added into the \code{activeTags} \code{Set}.
-
-
-One can see that the \code{forwardThinkCycle()} calls an \code{excite()} method on line 5 to excite a \code{KnowledgeNode}. This method returns the \code{Tags} activated as a result of excitation. The code can be seen in \autoref{lst:excite}.
+One can see that the \code{forwardThinkCycle()} method calls \code{excite()} (line 5) on a \code{KnowledgeNode}, which returns the \code{Tags} activated as a result of excitation. The method can be seen in \autoref{lst:excite}. This, in turn, may call \code{fire()} on line 5 to fire the \code{KnowledgeNode}, activate its output tags, and return the \code{Tags} activated as a result of firing. The method can be seen in \autoref{lst:fire}.
 
 \lstinputlisting[
 float=!htb,
@@ -401,16 +398,14 @@ label=lst:excite
 	\knnpath
 }
 
-This method, in turn, may call a \code{fire()} method on line 5 to fire the \code{KnowledgeNode} and activate its output tags. It returns all the \code{Tags} to be activated as a result of firing that \code{KnowledgeNode}. The code can be seen in \autoref{lst:fire}.
-
 \lstinputlisting[
 float=!htb,
 firstline=229,
 lastline=237,
-caption={Method to fire a Knowledge Node, activating its output tags.},
+caption={Method to fire a Knowledge Node.},
 label=lst:fire
 ]{
-	\knnpath
+\knnpath
 }
 
 A simple version of \code{thinkBackwards()} was also completed, activating a Knowledge Node only if all its output \code{Tags} are active.
@@ -422,15 +417,13 @@ All code relating directly to the ES was placed in the \code{es} package of the 
 The ES layer is based around the \code{ExpertSystem} Java class. This class has the following fields:
 
 \begin{labeling}{\code{recommendations}}
-	\item[\code{readyRules}] \code{Set} of \code{Rules} that have not been activated yet.
-	\item[\code{activeRules}] \code{Set} of active \code{Rules}.
-	\item[\code{facts}] \code{Set} of active \code{Facts}.
-	\item[\code{recommendations}] \code{Set} of active \code{Recommendations}.
+	\item[\code{readyRules}] \code{HashSet} of \code{Rules} that have not been activated yet.
+	\item[\code{activeRules}] \code{HashSet} of active \code{Rules}.
+	\item[\code{facts}] \code{HashSet} of active \code{Facts}.
+	\item[\code{recommendations}] \code{HashSet} of active \code{Recommendations}.
 \end{labeling}
 
-The most important method in the \code{ExpertSystem} is \code{think()}, which implements the functionality described in \ar{sec:background}.
-
-Without a parameter, the \code{think()} method runs to natural quiescence. This can be seen in \autoref{lst:think}.
+The most important method in the \code{ExpertSystem} is \code{think()}, which implements the functionality described in \ar{sec:background}. Without a parameter, the \code{think()} method runs to natural quiescence. This can be seen in \autoref{lst:think}.
 
 \lstinputlisting[
 float=!htb,
@@ -454,8 +447,6 @@ label=lst:thinkThreshold
 	\espath
 }
 
-Both versions of \code{think()} call a method named \code{thinkCycle()} representing a single cycle of thinking. The code for this method can be seen in \autoref{lst:thinkCycle}.
-
 \lstinputlisting[
 float=!htb,
 firstline=202,
@@ -463,10 +454,10 @@ lastline=227,
 caption=A single cycle of thinking in the ES.,
 label=lst:thinkCycle
 ]{
-	\espath
+\espath
 }
 
-Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} method on line 21, which adds a \code{Tag} to the ES depending on its type. The code can be seen in \autoref{lst:addTag}. The method is \code{public} because it could be used by a user of the ES to set the initial data structures. It returns \code{true} if the \code{Tag} is added successfully. The \code{addRule()}, \code{addFact()}, and \code{addRecommendation} methods simply add a \code{Tag} to the \code{readyRules}, \code{facts}, or \code{recommendations} \code{Sets}, respectively, and return \code{true} if the ES did not already contain the \code{Tag} to be added.
+Both versions of \code{think()} call a method named \code{thinkCycle()} representing a single cycle of thinking. The code for this method can be seen in \autoref{lst:thinkCycle}.
 
 \lstinputlisting[
 float=!htb,
@@ -478,59 +469,62 @@ label=lst:addTag
 	\espath
 }
 
-\subsection{Testing}
-
-All tests on the system were conducted using the TestNG framework in Java, which provides a simple and intuitive way to create assertions in tests. These tests were placed in the \code{test} package of the project. A UML diagram of the \code{test} package can be seen in \autoref{uml_test} of the Appendix.
-
-The primary methods of interest in the test package are \code{testKNN()}, \code{testES()}, and \code{testKNNandES()}.
-
-The test setup for the \code{testKNN()} method can be seen in \autoref{testKNN}. Every node has a \code{threshold} value of 1 to simplify the activation process. The system starts out with $A$ as the only active \code{Tag}, and \code{testKNN()} with \code{think()} until quiescence. It is therefore expected all the \code{Tags} shown in \autoref{testKNN} to become active at the end. The initial and final states are both asserted with TestNG in \code{testKNN()}, with positive results.
+Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} method on line 21, which adds a \code{Tag} to the ES depending on its type. The code can be seen in \autoref{lst:addTag}. The method is \code{public} because it could be used by a user of the ES to set the initial data structures. It returns \code{true} if the \code{Tag} is added successfully. The \code{addRule()}, \code{addFact()}, and \code{addRecommendation()} methods simply add a \code{Tag} to the \code{readyRules}, \code{facts}, or \code{recommendations} \code{Sets}, respectively, and return \code{true} if the ES did not already contain the \code{Tag} to be added.
 
 \begin{figure*}[!htb]
-	\includegraphics[width=\textwidth]{figures/testKNN.pdf}
-	\caption[Setup for the \code{testKNN()} method.]
-	{Initial setup for the \code{testKNN()} method.}
-	\label{testKNN}
+\includegraphics[width=\textwidth]{figures/testKNN.pdf}
+\caption[Setup for the \code{testKNN()} method.]
+{Initial setup for the \code{testKNN()} method.}
+\label{testKNN}
 \end{figure*}
 
-The test setup for the \code{testES()} method can be seen in \autoref{testES}. The columns from left to right correspond to the elements in the \code{readyRules}, the \code{activeRules}, the \code{facts}, and the \code{recommendations} respectively. The first row corresponds to the initial setup of the ES, and the last row corresponds to the expected final state. Both the initial and final states are asserted with TestNG in \code{testES()}, with positive results. The initial and final states were also tested with TestNG with positive results.
-
 \begin{table*}[!htb]
-	\large
-	\centering
-	\begin{tabular}{c | c | c | c} 
-		\textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
-		\specialcell{$(A)(B)\rightarrow(D)$ \\ $(D)(B)\rightarrow(E)$ \\ $(D)(E)\rightarrow(F)$\\ $(G)(A)\rightarrow(H)$ \\ $(E)(F)\rightarrow(\#Z)$} &  & $(A),(B)$ & $(\#X),(\#Y)$ \\ \hline
-		$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\ \hline
-		$(G)(A)\rightarrow(H)$ & \specialcell{$(A)(B)\rightarrow(D)$ \\ $(D)(B)\rightarrow(E)$ \\ $(D)(E)\rightarrow(F)$ \\ $(E)(F)\rightarrow(\#Z)$} & \specialcell{$(A),(B),$ \\ $(D),(E)$ \\ $(F)$} & $(\#X),(\#Y),(\#Z)$		
-	\end{tabular}
-	\caption[Test setup for \code{testES()}.]
-	{Test setup for \code{testES()}. Middle activation steps omitted.}
-	\label{testES}
+\large
+\centering
+\begin{tabular}{c | c | c | c | c} 
+	\textbf{State} & \textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
+	
+	Initial & \specialcell{$(A)(B)\rightarrow(D)$ \\ $(D)(B)\rightarrow(E)$ \\ $(D)(E)\rightarrow(F)$\\ $(G)(A)\rightarrow(H)$ \\ $(E)(F)\rightarrow(\#Z)$} &  & $(A),(B)$ & $(\#X),(\#Y)$ \\ \hline
+	
+	$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\ \hline
+	
+	Final & $(G)(A)\rightarrow(H)$ & \specialcell{$(A)(B)\rightarrow(D)$ \\ $(D)(B)\rightarrow(E)$ \\ $(D)(E)\rightarrow(F)$ \\ $(E)(F)\rightarrow(\#Z)$} & \specialcell{$(A),(B),$ \\ $(D),(E)$ \\ $(F)$} & $(\#X),(\#Y),(\#Z)$		
+\end{tabular}
+\caption[Test setup for \code{testES()}.]
+{Test setup for \code{testES()}. Middle activation steps omitted.}
+\label{testES}
 \end{table*}
 
-The \code{testKNNandES()} method has the same setup as \code{testKNN()} in \autoref{testKNN}, except the output active Tags from the KNN are passed on to the ES. The resulting setup and activation in the ES can be seen in \autoref{testKNNandES}.
-
 \begin{table*}[!htb]
-	\large
-	\centering
-	\begin{tabular}{c | c | c | c | c} 
-		\textbf{Cycle} & \textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
-		1
-		&$(H)(I)(J)\rightarrow(\#Z)$
-		& 
-		& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
-		& \\ \hline
-		
-		2
-		&
-		& $(H)(I)(J)\rightarrow(\#Z)$
-		& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
-		& $(\#Z)$
-	\end{tabular}
-	\caption{Test setup and activation for the ES portion of \code{testKNNandES()}.}
-	\label{testKNNandES}
+\large
+\centering
+\begin{tabular}{c | c | c | c | c} 
+	\textbf{State} & \textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
+	Initial
+	&$(H)(I)(J)\rightarrow(\#Z)$
+	& 
+	& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
+	& \\ \hline
+	
+	Final
+	&
+	& $(H)(I)(J)\rightarrow(\#Z)$
+	& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
+	& $(\#Z)$
+\end{tabular}
+\caption{Test setup and activation for the ES portion of \code{testKNNandES()}.}
+\label{testKNNandES}
 \end{table*}
+
+\subsection{Testing}
+
+All tests on the system were conducted using the TestNG framework in Java, which provides a simple and intuitive way to create assertions in tests. These tests were placed in the \code{test} package of the project. A UML diagram of the \code{test} package can be seen in \autoref{uml_test} of the Appendix. The primary methods of interest in the test package are \code{testKNN()}, \code{testES()}, and \code{testKNNandES()}.
+
+The test setup for the \code{testKNN()} method can be seen in \autoref{testKNN}. It creates a KNN, with every node having a \code{threshold} value of 1 to simplify the activation process. The system starts out with $A$ as the only active \code{Tag}, and \code{testKNN()} will make the KNN \code{think()} until natural quiescence. It is therefore expected all the \code{Tags} shown in \autoref{testKNN} to become active at the end. The initial and final states are both asserted with TestNG in \code{testKNN()}, with positive results.
+
+The test setup for the \code{testES()} method can be seen in \autoref{testES}. The columns from left to right correspond to the elements in the \code{readyRules}, the \code{activeRules}, the \code{facts}, and the \code{recommendations} respectively. The first row corresponds to the initial setup of the ES, and the last row corresponds to the expected final state. Both the initial and final states are asserted with TestNG in \code{testES()}, with positive results.
+
+The \code{testKNNandES()} method has the same setup as \code{testKNN()} in \autoref{testKNN}, except the output active Tags from the KNN are passed on to the ES. The resulting setup and activation in the ES can be seen in \autoref{testKNNandES}. The initial and final states were also tested with TestNG with positive results.
 
 \subsection{Documentation}
 
@@ -556,17 +550,17 @@ First, the KNN and ES will need to be finalized. It is expected that this will t
 
 \subsubsection{Knowledge Node Network}
 
-Many complex features of the KNN layer are still to be implemented, such as backwards and lambda thinking, confidence, and aging.
+Many features of the KNN layer are still to be implemented, such as backwards and lambda thinking, confidence, and aging.
 
 Backwards thinking can be implemented using a background thread in Java, constantly running in the background at some rate.
 
 Some thought still needs to be put into the specifics on implementation of lambda thinking. Most specifically, there will have to some scoring method to determine how far to search backwards before moving forwards.
 
-Confidence will have to be implemented. Confidence values will probably be associated with every individual \code{Tag}, as well as in an absolute sense in the KNN. Activation through the layers of the KNN can theoretically then reduce the absolute confidence that the output \code{Tags} are true, since at every step the confidence should be multiplied with the previous value.
+Confidence will have to be implemented. Confidence values will probably be associated with every individual \code{Tag}, as well as in an absolute sense in the KNN. Activation through the layers of the KNN can theoretically then reduce the confidence that the output \code{Tags} are true, since at every step the confidence should be multiplied with the previous value.
 
 Aging is also still left to be implemented, with a timestamp system as described in \autoref{sec:background}.
 
-Activation of Knowledge Nodes with sigmoid functions wills also be looked into. This can be easily implemented using a cache of known sigmoid values.
+Activation of Knowledge Nodes with sigmoid functions will also be looked into. This can be easily implemented using a cache of known sigmoid values.
 
 Also, more thought will have to be put into the design of the KNN to allow cyclic graphs, representing recursive memories in the human brain.
 
@@ -580,7 +574,7 @@ Some features of the ES layer are still to be implemented, such as more complex 
 
 One very important task left to be done is to integrate the two layers described in this report (ES and KNN) with the other layers developed separately (NN and META). Ideally, the layers should be able to work together, but there will surely be some conflicts at the interface of the layers. These will have to be resolved when the time comes.
 
-Most notably, the interface between the NN and the KNN will have to be tested. There may have to be some conversion between what the NN will output and what the KNN expects (\code{Tags}).
+The interface between the NN and the KNN will have to be tested. There may have to be some conversion between what the NN will output and what the KNN expects (\code{Tags}). The META layer is also still to be implemented. It is crucial, since it will decide the way the KNN will think.
 
 The integration section is expected to take around 2 months, with the the first month overlapping with the finalization section.
 
@@ -590,7 +584,7 @@ Finally, the system will have to be tested. This is expected to take around 2 mo
 
 The first and easiest way to test would be in a simulated environment. One simulator that may be used is Simbad, which is a Java 3D robot simulator \cite{simbad}. This can allow for some early debugging and fixes.
 
-One the simulation testing is completed and working properly, the system can be tested in the lab. Prof. Vybihal's lab has multiple robots with ultrasonic sensors, and these will be the test subjects of this phase.
+Once the simulation testing is completed and working properly, the system can be tested in the lab. Prof. Vybihal's lab has multiple robots with ultrasonic sensors, and these will be the test subjects of this phase.
 
 \section{Impact on Society and the Environment}
 % In one or two pages, discuss the environmental and/or social impact of your project. Your analysis should include your work at McGill as part of this project, however, the main focus should be on the product/system you are designing (e.g., the cost/benefit/risk of manufacturing it, the cost/benefit/risk for consumers using it) or the problem your thesis is addressing (e.g., how will solving the problem influence/affect/benefit society and the environment). Particular emphasis should be given to:
@@ -599,28 +593,21 @@ One the simulation testing is completed and working properly, the system can be 
 \subsection{Use of Non-renewable Resources}
 % Consider all stages of the product from design, manufacturing, distribution, use by consumers, and disposal/recycling.
 
-As purely a software project, there are no physical materials needed to construct this system. The only physical resources potentially needed the materials needed to construct the robots to test on. More emphasis will be put on the other sections here.
-% TODO: non-renewable here (silicon, for robots)?
-% TODO: say more emphasis on other sections
+As purely a software project, there are no physical materials needed to construct this system. For this reason, less emphasis will be put on this section. The only physical resources potentially needed are the materials needed to construct the robots and the computers to house the software. One area of concern could be the energy source of the robots themselves, which would probably vary depending on context. Ideally, the source should be a renewable one. For example, solar panels could be placed on the robots to provide energy.
 
 \subsection{Environmental Benefits}
 % Benefits to the environment, comparisons with more polluting technologies etc.
 
-The system could be used as a tool to control robots in dangerous environments such as oil spills. Theoretically, the robots could contain the problem faster than humans and thus limit the risk on the environment.
-% TODO: oil spill example?
+Prometheus could be used in a context beneficial to the environment. For example, the system could be used as a tool to control robots after oil spills, where the robots could theoretically contain the problem faster than humans and thus limit the risk on the environment. There is already research being done on employing robots in this context. Indeed, MIT's Senseable City Lab has been working on Seaswarm, a system composed of a fleet of vehicles to help clean future oil spills \cite{seaswarm}. An AI like Prometheus to control a swarm of robots like this could be very valuable. 
 
 \subsection{Safety and Risk}
 % To you undertaking the project, as well as to any potential users of the solution once it is finished.
 
-It is critical that, once this system is completed, it is used in an ethical way, and for the right purposes.
-
-% TODO: source (ethics of AI)
-
-One example of use that may cause ethical concern is in a military setting, where an AI system like the one described here could be used in a battlefield in place of soldiers.
-
-In the very long term, there are concerns with the possibility that an AI system might achieve intelligence and awareness close to a human. If such an AI were to obtain ``consciousness'' in its own way, should that entity be entitled to its own rights, like humans do?
+It is critical that, once this system is completed, it is used in an ethical way, and for the right purposes. One example of use that may cause ethical concern is in a military setting, where an AI system like the one described here could be used in a battlefield in place of soldiers. Indeed, the US Department of Defense has plans to employ AI for autonomous weapons to attack targets without human intervention in the future \cite{military}. This would have the advantage of potentially saving human soldiers' lives \cite{define_military_ai}. However, there are also concerns because this would make it much easier to start a battle. More than 3000 AI and robotics researchers have signed an open letter arguing against a military AI arms race \cite{openletter}. They argue that autonomous weapons would not be beneficial to society, since they would be ideal for assassinations, destabilizing countries or selectively subduing or killing a population.
 
 Another possible issue is the future loss of jobs to be done by humans, with automated systems like Prometheus replacing physical labor. This problem can be solved as a society, perhaps by having more support for universal basic income (UBI). Telsa CEO Elon Musk is a proponent of the idea, saying that UBI will be necessary in the future \cite{musk}. Bill Gates suggests possibly having a tax on robots to help pay for this income \cite{gates}.
+
+In the very long term, there are concerns with the possibility that an AI system might achieve intelligence and awareness close to a human. If such an AI were to obtain ``consciousness'' in its own way, should that entity be entitled to its own rights, like humans or animals are? The issue has been mentioned by the Institute for the Future, calling for the possibility of ``robo-rights'' in the future \cite{robo_rights}.
 
 
 % TODO: Reorganize society with high-level thinking, common salary
@@ -628,18 +615,16 @@ Another possible issue is the future loss of jobs to be done by humans, with aut
 \subsection{Benefits to Society}
 % Quality of life, economic benefits, etc.
 
-This type of system could be extremely useful in many contexts in society.
+This type of system could be extremely useful in many contexts in society. For instance, the system could be used to send and control robots in an area that would otherwise be very dangerous for humans. For example, robots are often used in the aftermath of nuclear disasters to prevent the unnecessary loss of human life. Indeed, even in the Chernobyl nuclear disaster, the Soviet authorities employed the use of robots to avoid losses of human life \cite{chernobyl}. With an AI like Prometheus, the robots could be controlled in an intelligent manner.
 
-The system could be used to send robots in an area that would otherwise be very dangerous for humans. This would therefore help prevent the unnecessary loss of life in cleaning up these leaks. Indeed, even in the Chernobyl nuclear disaster, the Soviet authorities employed the use of robots to avoid unnecessary loss of human life \cite{chernobyl}.
-
-The system could also be used to further space exploration, with an intelligent AI controlling multiple robots exploring the surface of Mars, for instance. The value of AI in this context has been clearly shown, with the Mars Curiosity rover recently being upgraded to have its own AI system using computer vision to identify rocks \cite{rover}. This system can therefore help further important cutting edge research in space exploration.
+The system could also be used to further space exploration, with an AI controlling multiple robots exploring the surface of Mars, for instance. The value of AI in this context has been clearly shown, with the Mars Curiosity rover recently being upgraded to have its own AI system using computer vision to identify rocks \cite{rover}. This system can therefore help further important cutting-edge research in space exploration.
 
 \section{Conclusion}
 % Use this section to summarize what was accomplished in this semester, provide a summary of the next steps and share any insight you have learned.
 
-This semester, prototypes of the Expert System (ES) and Knowledge Node Network (KNN) layers of the AI model were completed in Java. These prototypes were tested individually and together, with positive results.
+This semester, prototypes of the Expert System (ES) and Knowledge Node Network (KNN) layers of the Prometheus AI model were completed in Java based on personal design criteria and feedback from the supervisor. The design of the prototypes has required a great deal of thought and planning to ensure efficiency and proper behaviour. These prototypes were tested using the TestNG Java framework with positive results, and extensive Javadoc was produced.
 
-The main goal for next semester is to finalize the entire system, implementing more complex features that were omitted for this prototype stage. This will also require proper integration between the work done in this report (KNN and ES), and outside this report (NN and META).
+The main goal for next semester is to finalize the entire system, implementing more complex features that were omitted for this prototype stage. This will also require proper integration between the work done in this report (KNN and ES), and outside this report (NN and META). Finally, the entire system will have to be tested, in simulation and with physical robots.
 
 \clearpage
 \onecolumn
