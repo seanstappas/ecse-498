@@ -44,12 +44,12 @@
   framexleftmargin=2em
 }
 % PC
-\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
-\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
+%\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
+%\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
 
 % OSX
-%\def \espath {"/Users/seanstappas1/GitHub/prometheus-ai/es/ExpertSystem.java"}
-%\def \knnpath {"/Users/seanstappas1/GitHub/prometheus-ai/knn/KnowledgeNodeNetwork.java"}
+\def \espath {"/Users/seanstappas1/GitHub/prometheus-ai/es/ExpertSystem.java"}
+\def \knnpath {"/Users/seanstappas1/GitHub/prometheus-ai/knn/KnowledgeNodeNetwork.java"}
 
 \def\equationautorefname~#1\null{%
   Equation~(#1)\null
@@ -97,7 +97,7 @@
 
 \section*{Abstract}
 % The abstract is an executive summary of your project/thesis. It should provide an overview of your project/thesis by addressing the following questions. a. What is the motivation for the project/thesis? b. What are the goals of the project/thesis? c. What was achieved this semester? d. What methods were used to make those achievements? The abstract should be between 200 and 250 words long.
-Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides recommendations for actions to the Meta Reasoner. The META represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
+Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides recommendations for actions to the META. The META represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
 
 \section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
@@ -116,12 +116,15 @@ Elsa Riachi worked on the other two layers of the Prometheus AI (NN and META) in
 \section*{Abbreviations}
 % List of abbreviations and/or notation used in the report.
 
+The following abbreviations will be used throughout the report:
+
 \begin{labeling}{abbreviations}
-\item [NN] Neural Network
-\item [KNN] Knowledge Node Network
-\item [ES] Expert System
-\item [META] Meta Reasoner
-\item [OOP] Object-Oriented Programming
+\item [NN] Neural Network.
+\item [KNN] Knowledge Node Network.
+\item [KN] Knowledge Node.
+\item [ES] Expert System.
+\item [META] Meta Reasoner.
+\item [OOP] Object-Oriented Programming.
 \end{labeling}
 
 \section{Introduction} \label{sec:intro}
@@ -160,34 +163,32 @@ Ultimately, the classification and localization of objects will produce abstract
 
 \subsection{Knowledge Node Network}
 
-The KNN layer represents memory in the human brain. It takes in the tags provided by the NN and outputs tags based on its knowledge of the environment. These output tags can be simple facts, such as ``I see a wall'', recommendations for future actions such as ``turn left'', or rules, which will be described in the ES section. These tags are passed on to the ES.
-
-The KNN is based around interconnected Knowledge Nodes, which are abstract structures representing memories and their connections to other memories. A simple model of a Knowledge Node can be seen in \ar{kn}.
+The KNN layer represents memory in the human brain. It takes in the tags provided by the NN and outputs tags based on its knowledge of the environment. The KNN is based around interconnected Knowledge Nodes (KNs), which are abstract structures representing memories and their connections to other memories. A simple model of a Knowledge Node (KN) can be seen in \ar{kn}.
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figures/kn.pdf}
 	\caption[High-level model of the Knowledge Node of the KNN.]
-	{High-level model of the Knowledge Node of the KNN \cite{vybihal-knowledge}.}
+	{High-level model of the Knowledge Node (KN) of the KNN \cite{vybihal-knowledge}.}
 	\label{kn}
 \end{figure}
 
-Knowledge Nodes have an input tag representing some information, and output tags representing information related to the input tag. Tags in the KNN can become ``active'', meaning that they are observed or seen as true. For example, if the NN determines that it observes a ball and passes that information on to the KNN, then a ``ball'' tag may become active in the KNN. This would excite the Knowledge Node with input tag ``ball''. If that Knowledge Node fires, other tags related to that observation can become active. For example, tags representing ball characteristics such as ``round object'' may become active. This tag in turn may be connected to another Knowledge Node, potentially causing more activation.
+KNs have an input tag representing some information, and output tags representing information related to the input tag. Tags in the KNN can become ``active'', meaning that they are observed or seen as true. For example, if the NN determines that it observes a ball and passes that information on to the KNN, then a ``ball'' tag may become active in the KNN. This would excite the KN with input tag ``ball''. If that KN fires, other tags related to that observation can become active. For example, tags representing ball characteristics such as ``round object'' may become active. This tag in turn may be connected to another KN, potentially causing more activation.
 
-There are different ways that Knowledge Node excitation could be implemented. With simple linear activation, an excitation would increment the node's activation parameter, which initially starts at 0. If $activation \geq threshold$, the Knowledge Node fires, causing the activation of the output tags. This description corresponds to forwards thinking. The activation can also be with a sigmoid function, which is more representative of neurons in the brain \cite{neuro}.
+There are different ways that KN excitation could be implemented. With simple linear activation, an excitation would increment the node's activation parameter, which initially starts at 0. If $activation \geq threshold$, the KN fires, causing the activation of the output tags. This description corresponds to forwards thinking. The activation can also be with a sigmoid function, which is more representative of neurons in the brain \cite{neuro}.
 
 % TODO: talk more about relation to neurons in brain, and ways to leverage this
 
-There is a strength value associated with every Knowledge Node which represents how much weight an activation has and therefore how quickly that node will fire. A simple implementation of strength would be as a constant coefficient multiplying the activation parameter. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$, where the strength is positive. The strength value could be 0 however, which effectively shuts off the Knowledge Node. Another way of implementing strength is to check $activation + strength \geq threshold$. In this case, strength can be negative and hinder the firing of the node.
+There is a strength value associated with every KN which represents how much weight an activation has and therefore how quickly that node will fire. A simple implementation of strength would be as a constant coefficient multiplying the activation parameter. So, instead of checking when the activation is greater than the threshold, one would check if $activation * strength \geq threshold$, where the strength is positive. The strength value could be 0 however, which effectively shuts off the KN. Another way of implementing strength is to check $activation + strength \geq threshold$. In this case, strength can be negative and hinder the firing of the node.
 
 Strength can be seen as the firing predisposition of neurons in the brain as a result of learning \cite{vybihal-knowledge}. Indeed, learning can increase the synaptic strength between neurons and cause early or late firing of those neurons \cite{hebb}. For example, a person who has had a bad experience with spiders would fire their fear response upon seeing a spider more quickly than one without that fear.
 
-Every Knowledge Node can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. In this case, the confidence value would be stored within the Knowledge Node itself. These confidence values can come from the NN, since a neural network will always have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other to produce a new confidence value, making the KNN less certain of a memory as it searches through its tree of Knowledge Nodes. This represents how belief changes when thinking. Indeed, some memories in the human brain require a great deal of thinking to reach and, as such, can be less certain than other memories. This can lead to the recollection of false memories \cite{falsememories}.
+Every KN can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. In this case, the confidence value would be stored within the KN itself. These confidence values can come from the NN, since a neural network will always have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other to produce a new confidence value, making the KNN less certain of a memory as it searches through its tree of KNs. This represents how belief changes when thinking. Indeed, some memories in the human brain require a great deal of thinking to reach and, as such, can be less certain than other memories. This can lead to the recollection of false memories \cite{falsememories}. % TODO: source (neural network always has confidence value)
 
-Age represents how long it has been since a Knowledge Node has been excited. The idea is that, after a Knowledge Node has aged a certain amount of time, that node will be discarded, similarly to how old memories are discarded in the brain \cite{aging}. The intuitive implementation of aging is to constantly increment some age value associated with every Knowledge Node, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every Knowledge Node when it is excited, and if the KNN attempts to excite a Knowledge Node whose previous timestamp value is too far into the past, that node is instead deleted.
+Age represents how long it has been since a KN has been excited. The idea is that, after a KN has aged a certain amount of time, that node will be discarded, similarly to how old memories are discarded in the brain \cite{aging}. The intuitive implementation of aging is to constantly increment some age value associated with every KN, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every KN when it is excited, and if the KNN attempts to excite a KN whose previous timestamp value is too far into the past, that node is instead deleted.
 
-Thinking in the KNN represents an activation routine, activating tags and potentially firing Knowledge Nodes. The KNN has three main ways of thinking: forwards, backwards, and lambda. The version of thinking to be done by the KNN is chosen by the META.
+Thinking in the KNN represents an activation routine, which activates tags and potentially fires KNs. The KNN has three main ways of thinking: forwards, backwards, and lambda. The version of thinking to be done by the KNN is chosen by the META.
 
-Forwards thinking is the simplest and is depicted in \autoref{think_forwards}. Firing a Knowledge Node can cause forward activation of more Knowledge Nodes, hence the ``forwards'' naming.
+Forwards thinking is the simplest and is depicted in \autoref{think_forwards}. Firing a KN can cause forward activation of more KNs, hence the ``forwards'' naming.
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figures/forwards_thinking.pdf}
@@ -195,9 +196,7 @@ Forwards thinking is the simplest and is depicted in \autoref{think_forwards}. F
 	\label{think_forwards}
 \end{figure}
 
-Thinking backwards starts at the output tags of Knowledge Nodes, and works backwards, as can seen in \autoref{think_backwards}. In its simplest form, it checks output tags of Knowledge Nodes and, if all of them are active, the input tag must be active as well, so that Knowledge Node is fired.
-
-This type of thinking can be more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a Knowledge Node corresponds to an active input tag. For instance, should a Knowledge Node fire when 100\% of its output nodes are active, or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with some uncertainty \cite{uncertainty} and this is what can be represented with backwards thinking. This type of thinking occurs constantly in the background in humans \cite{vybihal-knowledge}, and this is something to keep in mind during implementation.
+Thinking backwards starts at the output tags of KNs, and works backwards, as can seen in \autoref{think_backwards}. In its simplest form, it checks output tags of KNs and, if all of them are active, the input tag must be active as well, so that KN is fired.
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figures/backwards_thinking.pdf}
@@ -205,7 +204,9 @@ This type of thinking can be more difficult to implement than forwards thinking,
 	\label{think_backwards}
 \end{figure}
 
-Lambda thinking uses a combination of forwards and backwards, and can be seen in \autoref{think_lambda}. It is called ``lambda'' thinking because the shape of the thinking trajectory matches a Greek uppercase lambda ($\Lambda$). It first looks at output tags of Knowledge Nodes and propagates activation backwards, similar to backwards thinking. After a certain amount of nodes are fired, it will then start activating forwards, similar to thinking forwards. An interesting question is how far backwards should lambda thinking go before starting to cascade forwards? This relates to how general one wants to explore before searching for a more specific value.
+This type of thinking can be more difficult to implement than forwards thinking, since one must decide what percentage of active output tags of a KN corresponds to an active input tag. For instance, should a KN fire when 100\% of its output nodes are active, or when 75\% are active? This relates to the confidence with which the KNN believes the tag associated with that node to be true. As a concrete example, if you observe an object that has four wheels, seats, and a steering wheel, how confident are you that that object is a car? Realistically, humans with often classify what they observe with some uncertainty \cite{uncertainty} and this is what can be represented with backwards thinking. This type of thinking occurs constantly in the background in humans \cite{vybihal-knowledge}, and this is something to keep in mind during implementation.
+
+Lambda thinking uses a combination of forwards and backwards, and can be seen in \autoref{think_lambda}. It is called ``lambda'' thinking because the shape of the thinking trajectory matches a Greek uppercase lambda ($\Lambda$). It first looks at output tags of KNs and propagates activation backwards, similar to backwards thinking. After a certain amount of nodes are fired, it will then start activating forwards, similar to thinking forwards. An interesting question is how far backwards should lambda thinking go before starting to cascade forwards? This relates to how general one wants to explore before searching for a more specific value.
 
 \begin{figure}[!htb]
 \includegraphics[width=\columnwidth]{figures/lambda_thinking.pdf}
@@ -215,7 +216,9 @@ Lambda thinking uses a combination of forwards and backwards, and can be seen in
 
 This type of thinking occurs in humans when using analogical reasoning to find a memory \cite{vybihal-lambda}. In essence, when a person wants to locate a memory that is not directly accessible, they will explore related memories, move their way ``backwards'' to concepts related to the desired memory, and think ``forwards'' to focus in on the desired memory. For example, if one is asked where they were in 2002 at a specific date, they most likely would not remember. If they explore related dates and events in their life, however, they may be able to narrow down and extract that memory. In the context of the Prometheus system, lambda thinking will be attempted if all other forms of thinking fail (forwards and backwards).
 
-All forms of thinking can continue until there are no more Knowledge Nodes to activate, which corresponds to natural quiescence. There can also be a fixed number of thinking cycles, which represents how much effort is being put into thinking. Indeed, in humans, thinking is done with varying degrees of effort \cite{thinking}, and it would be interesting to model this.
+All forms of thinking can continue until there are no more KNs to activate, which corresponds to natural quiescence. There can also be a fixed number of thinking cycles, which represents how much effort is being put into thinking. Indeed, in humans, thinking is done with varying degrees of effort \cite{thinking}, and it would be interesting to model this.
+
+The result of all forms of thinking is a collection of activated tags, which are passed on to the ES.
 
 \subsection{Expert System}
 
@@ -251,7 +254,7 @@ When all the input tags become active, the output tags become active and the rul
 
 The most important part of the previous process is the thinking stage, which represents the activation routine of the ES. This consists of first iterating through all the rules in the ES and checking if they are active by inspecting the lists of facts and recommendations. Rules may then become active and cause cascading activation of more rules. This can continue until there are no more rules to activate, which corresponds to natural quiescence. There can also be a fixed number of thinking cycles, which represents the effort put into thinking, similarly to the KNN.
 
-The recommendations activated as a result of thinking are passed on to the final layer, the Meta Reasoner (META).
+The recommendations activated as a result of thinking are passed on to the final layer, the META.
 
 \subsection{Meta Reasoner}
 
@@ -279,7 +282,7 @@ As a deliverable for the end of this first semester, it was required to complete
 
 \subsection{Efficiency}
 
-A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimulus in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java \code{Sets} for most of the collections in the ES and KNN layers. The original specifications mentioned using \code{ArrayLists}, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to \code{HashSets}. This is faster because \code{HashSets} have $O(1)$ access time, whereas \code{ArrayLists} have $O(N)$, where N is the size of the list. \code{HashSets} also have the advantage of only permitting unique elements.
+A very important consideration when designing the system is speed. Since the robots may have to react very quickly to stimuli in the environment, the reasoning in the AI must be as fast as possible. This is especially true in the hazardous environments for which this system could be useful for, as specified in \autoref{sec:intro}. An example of a design choice that was made to improve speed is the use of Java \code{Sets} for most of the collections in the ES and KNN layers. The original specifications mentioned using \code{ArrayLists}, but, since there is no specific iteration order necessary for most operations in the ES and KNN, these collections were changed to \code{HashSets}. This is faster because \code{HashSets} have $O(1)$ access time, whereas \code{ArrayLists} have $O(N)$ access time, where N is the number of elements in the collection. \code{HashSets} also have the advantage of only permitting unique elements.
 
 \subsection{Object Oriented Design}
 
@@ -338,14 +341,14 @@ The KNN layer is based around the \code{KnowledgeNodeNetwork} Java class. This c
 	\item[\code{activeTags}] \code{HashSet} of active \code{Tags}, corresponding to input \code{Tags} of fired \code{KnowledgeNodes}.
 \end{labeling}
 
-The \code{KnowledgeNode} class implements the functionality of a Knowledge Node, which has the following important fields to implement the functionality described in \autoref{sec:background}:
+The \code{KnowledgeNode} class implements the functionality of a KN, which has the following important fields to implement the functionality described in \autoref{sec:background}:
 
 \begin{labeling}{\code{outputTags}}
 	\item[\code{inputTag}] Input \code{Tag}.
 	\item[\code{outputTags}] \code{Array} of output \code{Tags}.
 	\item[\code{activation}] \code{int} starting at 0, incrementing when the \code{KnowledgeNode} is excited.
 	\item[\code{threshold}] \code{int} threshold such that \code{activation $\geq$ threshold} causes firing of the \code{KnowledgeNode}.
-	\item[\code{strength}] \code{int} that biases the activation of a \code{KnowledgeNode}, causing early firing. If \code{activation * strength $\geq$ threshold}, then fire the \code{KnowledgeNode}.
+	\item[\code{strength}] \code{int} that biases the activation of a \code{KnowledgeNode}, causing early firing. The \code{KnowledgeNode} is fired if \code{(activation $\cdot$ strength) $\geq$ threshold}.
 	\item[\code{confidence}] \code{int} representing the belief that \code{inputTag} is true (0 to 100).
 	\item[\code{age}] \code{int} representing the age of the \code{KnowledgeNode}.
 \end{labeling}
@@ -358,7 +361,7 @@ Without a parameter, the \code{think()} method runs to natural quiescence. There
 float=!htb,
 firstline=163,
 lastline=171,
-caption=Thinking forwards until natural quiescence in the KNN.,
+caption=Method to think forwards until natural quiescence in the KNN.,
 label=lst:thinkForwards
 ]{
 	\knnpath
@@ -368,7 +371,7 @@ label=lst:thinkForwards
 float=!htb,
 firstline=179,
 lastline=189,
-caption=Thinking forwards for a fixed number of cycles in the KNN.,
+caption=Method to think forwards for a fixed number of cycles in the KNN.,
 label=lst:thinkForwardsThreshold
 ]{
 	\knnpath
@@ -380,7 +383,7 @@ Currently, only the \code{thinkForwards()} method is fully completed. The versio
 float=!htb,
 firstline=196,
 lastline=206,
-caption=Single cycle of thinking forwards in the KNN.,
+caption=Method to think forwards for a single cycle in the KNN.,
 label=lst:forwardThinkCycle
 ]{
 	\knnpath
@@ -392,7 +395,7 @@ One can see that the \code{forwardThinkCycle()} method calls \code{excite()} (li
 float=!htb,
 firstline=214,
 lastline=221,
-caption=Method to excite a Knowledge Node.,
+caption=Method to excite a KN.,
 label=lst:excite
 ]{
 	\knnpath
@@ -402,13 +405,13 @@ label=lst:excite
 float=!htb,
 firstline=229,
 lastline=237,
-caption={Method to fire a Knowledge Node.},
+caption={Method to fire a KN.},
 label=lst:fire
 ]{
 \knnpath
 }
 
-A simple version of \code{thinkBackwards()} was also completed, activating a Knowledge Node only if all its output \code{Tags} are active.
+A simple version of \code{thinkBackwards()} was also completed, activating a KN only if all its output \code{Tags} are active.
 
 \subsection{Expert System}
 
@@ -429,7 +432,7 @@ The most important method in the \code{ExpertSystem} is \code{think()}, which im
 float=!htb,
 firstline=153,
 lastline=166,
-caption=Thinking until natural quiescence in the ES.,
+caption=Method to think until natural quiescence in the ES.,
 label=lst:think
 ]{
 	\espath
@@ -441,7 +444,7 @@ There is also an overloaded version of \code{think()} that functions similarly t
 float=!htb,
 firstline=178,
 lastline=192,
-caption=Thinking with a fixed number of cycles in the ES.,
+caption=Method to think for a fixed number of cycles in the ES.,
 label=lst:thinkThreshold
 ]{
 	\espath
@@ -451,7 +454,7 @@ label=lst:thinkThreshold
 float=!htb,
 firstline=202,
 lastline=227,
-caption=A single cycle of thinking in the ES.,
+caption=Method to think for a single cycle in the ES.,
 label=lst:thinkCycle
 ]{
 \espath
@@ -560,7 +563,7 @@ Confidence will have to be implemented. Confidence values will probably be assoc
 
 Aging is also still left to be implemented, with a timestamp system as described in \autoref{sec:background}.
 
-Activation of Knowledge Nodes with sigmoid functions will also be looked into. This can be easily implemented using a cache of known sigmoid values.
+Activation of KNs with sigmoid functions will also be looked into. This can be easily implemented using a cache of known sigmoid values.
 
 Also, more thought will have to be put into the design of the KNN to allow cyclic graphs, representing recursive memories in the human brain.
 
