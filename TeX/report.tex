@@ -44,12 +44,12 @@
   framexleftmargin=2em
 }
 % PC
-%\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
-%\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
+\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
+\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
 
 % OSX
-\def \espath {"/Users/seanstappas1/GitHub/prometheus-ai/es/ExpertSystem.java"}
-\def \knnpath {"/Users/seanstappas1/GitHub/prometheus-ai/knn/KnowledgeNodeNetwork.java"}
+%\def \espath {"/Users/seanstappas1/GitHub/prometheus-ai/es/ExpertSystem.java"}
+%\def \knnpath {"/Users/seanstappas1/GitHub/prometheus-ai/knn/KnowledgeNodeNetwork.java"}
 
 \def\equationautorefname~#1\null{%
   Equation~(#1)\null
@@ -97,7 +97,7 @@
 
 \section*{Abstract}
 % The abstract is an executive summary of your project/thesis. It should provide an overview of your project/thesis by addressing the following questions. a. What is the motivation for the project/thesis? b. What are the goals of the project/thesis? c. What was achieved this semester? d. What methods were used to make those achievements? The abstract should be between 200 and 250 words long.
-Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides recommendations for actions to the META. The META represents high-level thinking and makes an intelligent decision for what the robots should do. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
+Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides recommendations for actions to the META. The META represents high-level thinking and makes an intelligent decision for the robots. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
 
 \section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
@@ -130,7 +130,7 @@ The following abbreviations will be used throughout the report:
 \section{Introduction} \label{sec:intro}
 % In this section you should introduce (at a high level) the overall theme of the project, and state clearly what are the goals you are trying to achieve.  This section should also clearly convey why this project is important, what is the potential impact (applications, etc).
 
-The goal of this project is to create an artificial intelligence system to control multiple robots. Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones.
+The goal of this project is to create an artificial intelligence system to control multiple robots. Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones. The system could ideally learn from certain environments and apply its learning to new environments.
 
 The robots themselves are expected to have a fixed front-facing camera and ultrasonic sensor(s). Each robot may have multiple fixed ultrasonic sensors pointing in different directions, or a single rotating ultrasonic sensor that sweeps the area in front of the robot. The ultrasonic sensor(s) can measure distance between the robot and nearby objects, and the camera can take images of what the robot is facing.
 
@@ -174,7 +174,7 @@ The KNN layer represents memory in the human brain. It takes in the tags provide
 
 KNs have an input tag representing some information, and output tags representing information related to the input tag. Tags in the KNN can become ``active'', meaning that they are observed or seen as true. For example, if the NN determines that it observes a ball and passes that information on to the KNN, then a ``ball'' tag may become active in the KNN. This would excite the KN with input tag ``ball''. If that KN fires, other tags related to that observation can become active. For example, tags representing ball characteristics such as ``round object'' may become active. This tag in turn may be connected to another KN, potentially causing more activation.
 
-There are different ways that KN excitation could be implemented. With simple linear activation, an excitation would increment the node's activation parameter, which initially starts at 0. If $activation \geq threshold$, the KN fires, causing the activation of the output tags. This description corresponds to forwards thinking. The activation can also be with a sigmoid function, which is more representative of neurons in the brain \cite{neuro}.
+There are different ways that KN excitation could be implemented. With simple linear activation, excitation would increment the node's activation parameter, which initially starts at 0. If $activation \geq threshold$, the KN fires, causing the activation of the output tags. This description corresponds to forwards thinking. The activation can also be achieved using a sigmoid function, which is more representative of neurons in the brain \cite{neuro}.
 
 % TODO: talk more about relation to neurons in brain, and ways to leverage this
 
@@ -182,7 +182,7 @@ There is a strength value associated with every KN which represents how much wei
 
 Strength can be seen as the firing predisposition of neurons in the brain as a result of learning \cite{vybihal-knowledge}. Indeed, learning can increase the synaptic strength between neurons and cause early or late firing of those neurons \cite{hebb}. For example, a person who has had a bad experience with spiders would fire their fear response upon seeing a spider more quickly than one without that fear.
 
-Every KN can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. In this case, the confidence value would be stored within the KN itself. These confidence values can come from the NN, since a neural network will always have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other to produce a new confidence value, making the KNN less certain of a memory as it searches through its tree of KNs. This represents how belief changes when thinking. Indeed, some memories in the human brain require a great deal of thinking to reach and, as such, can be less certain than other memories. This can lead to the recollection of false memories \cite{falsememories}. % TODO: source (neural network always has confidence value)
+Every KN can have a confidence value associated with it, representing how certain the KNN is that the input tag is true. In this case, the confidence value would be stored within the KN itself. These confidence values can come from the NN, since a neural network can have a confidence value when classifying objects. When initiating a think cycle, the confidence value at each stage can be multiplied with each other to produce a new confidence value, making the KNN less certain of a memory as it searches through its tree of KNs. This represents how belief changes when thinking. Indeed, some memories in the human brain require a great deal of thinking to reach and, as such, can be less certain than other memories. This can lead to the recollection of false memories \cite{falsememories}.
 
 Age represents how long it has been since a KN has been excited. The idea is that, after a KN has aged a certain amount of time, that node will be discarded, similarly to how old memories are discarded in the brain \cite{aging}. The intuitive implementation of aging is to constantly increment some age value associated with every KN, and discard nodes whose age is greater than some threshold. The age would be reset when the node is excited. This would however be unnecessarily computationally intensive, requiring some kind of constant updating of every single node. A more efficient way of doing it would be to save a timestamp for every KN when it is excited, and if the KNN attempts to excite a KN whose previous timestamp value is too far into the past, that node is instead deleted.
 
@@ -347,9 +347,9 @@ The \code{KnowledgeNode} class implements the functionality of a KN, which has t
 	\item[\code{inputTag}] Input \code{Tag}.
 	\item[\code{outputTags}] \code{Array} of output \code{Tags}.
 	\item[\code{activation}] \code{int} starting at 0, incrementing when the \code{KnowledgeNode} is excited.
-	\item[\code{threshold}] \code{int} threshold such that \code{activation $\geq$ threshold} causes firing of the \code{KnowledgeNode}.
+	\item[\code{threshold}] \code{int} threshold that causes firing of the \code{KnowledgeNode}.
 	\item[\code{strength}] \code{int} that biases the activation of a \code{KnowledgeNode}, causing early firing. The \code{KnowledgeNode} is fired if \code{(activation $\cdot$ strength) $\geq$ threshold}.
-	\item[\code{confidence}] \code{int} representing the belief that \code{inputTag} is true (0 to 100).
+	\item[\code{confidence}] \code{int} representing the belief that the \code{inputTag} is true (0 to 100).
 	\item[\code{age}] \code{int} representing the age of the \code{KnowledgeNode}.
 \end{labeling}
 
@@ -484,6 +484,8 @@ Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} 
 \begin{table*}[!htb]
 \large
 \centering
+\caption[Test setup for \code{testES()}.]
+{Test setup for \code{testES()}. Middle activation steps omitted.}
 \begin{tabular}{c | c | c | c | c} 
 	\textbf{State} & \textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
 	
@@ -493,14 +495,13 @@ Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} 
 	
 	Final & $(G)(A)\rightarrow(H)$ & \specialcell{$(A)(B)\rightarrow(D)$ \\ $(D)(B)\rightarrow(E)$ \\ $(D)(E)\rightarrow(F)$ \\ $(E)(F)\rightarrow(\#Z)$} & \specialcell{$(A),(B),$ \\ $(D),(E)$ \\ $(F)$} & $(\#X),(\#Y),(\#Z)$		
 \end{tabular}
-\caption[Test setup for \code{testES()}.]
-{Test setup for \code{testES()}. Middle activation steps omitted.}
 \label{testES}
 \end{table*}
 
 \begin{table*}[!htb]
 \large
 \centering
+\caption{Test setup and activation for the ES portion of \code{testKNNandES()}.}
 \begin{tabular}{c | c | c | c | c} 
 	\textbf{State} & \textbf{Ready Rules} & \textbf{Active Rules} & \specialcell{\textbf{Active} \\ \textbf{Facts}} & \specialcell{\textbf{Active} \\ \textbf{Recommendations}}  \\ \hline
 	Initial
@@ -515,7 +516,6 @@ Finally, we see in the \code{thinkCycle()} method a call to the \code{addTag()} 
 	& \specialcell{$(B),(C),(D)$ \\ $(E),(F),(G)$ \\ $(H),(I),(J)$}
 	& $(\#Z)$
 \end{tabular}
-\caption{Test setup and activation for the ES portion of \code{testKNNandES()}.}
 \label{testKNNandES}
 \end{table*}
 
@@ -555,7 +555,7 @@ First, the KNN and ES will need to be finalized. It is expected that this will t
 
 Many features of the KNN layer are still to be implemented, such as backwards and lambda thinking, confidence, and aging.
 
-Backwards thinking can be implemented using a background thread in Java, constantly running in the background at some rate.
+Backwards thinking can be implemented using a thread in Java, constantly running in the background at some rate.
 
 Some thought still needs to be put into the specifics on implementation of lambda thinking. Most specifically, there will have to some scoring method to determine how far to search backwards before moving forwards.
 
