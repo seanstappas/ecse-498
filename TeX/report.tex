@@ -44,12 +44,12 @@
   framexleftmargin=2em
 }
 % PC
-\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
-\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
+%\def \espath {"C:/Users/Sean/IdeaProjects/Prometheus/src/es/ExpertSystem.java"}
+%\def \knnpath {"C:/Users/Sean/IdeaProjects/Prometheus/src/knn/KnowledgeNodeNetwork.java"}
 
 % OSX
-%\def \espath {"/Users/seanstappas1/GitHub/prometheus-ai/es/ExpertSystem.java"}
-%\def \knnpath {"/Users/seanstappas1/GitHub/prometheus-ai/knn/KnowledgeNodeNetwork.java"}
+\def \espath {"/Users/seanstappas1/GitHub/prometheus-ai/es/ExpertSystem.java"}
+\def \knnpath {"/Users/seanstappas1/GitHub/prometheus-ai/knn/KnowledgeNodeNetwork.java"}
 
 \def\equationautorefname~#1\null{%
   Equation~(#1)\null
@@ -97,7 +97,7 @@
 
 \section*{Abstract}
 % The abstract is an executive summary of your project/thesis. It should provide an overview of your project/thesis by addressing the following questions. a. What is the motivation for the project/thesis? b. What are the goals of the project/thesis? c. What was achieved this semester? d. What methods were used to make those achievements? The abstract should be between 200 and 250 words long.
-Prometheus AI is a model of the human brain with the goal of controlling multiple robots in a swarm environment. This could be useful in environments hazardous for humans, such as the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides recommendations for actions to the META. The META represents high-level thinking and makes an intelligent decision for the robots. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
+Prometheus AI is a model of the human brain with the goal of controlling and coordinating multiple robots in different environments. This could be useful in environments hazardous for humans, such as in the aftermath of a nuclear power disaster, or in outer space. The model consists of four layers: the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META). The NN classifies the signals coming from the robots' sensors and sends formatted tags to the KNN. The KNN represents memory and can initiate cascaded activation of memories in the form of tags, which are passed on to the ES. The ES is a simple logic reasoner and provides recommendations for actions to the META. The META represents high-level thinking and makes an intelligent decision for the robots. The assigned task this semester was to implement prototypes of the KNN and ES layers in Java. This was achieved using specific design criteria and extensive feedback from the project supervisor, Prof. Vybihal. Personal design criteria included using object-oriented programming principles, optimizing the system for speed and space efficiency, and maximizing code readability. Tests were created in TestNG and extensive documentation was written in Javadoc.
 
 \section*{Acknowledgments}
 % If applicable, you may acknowledge people here who contributed to the project in some way but are not listed on the title page. (For example, if you received advice, data, or supervision from graduate students or others.)
@@ -130,9 +130,9 @@ The following abbreviations will be used throughout the report:
 \section{Introduction} \label{sec:intro}
 % In this section you should introduce (at a high level) the overall theme of the project, and state clearly what are the goals you are trying to achieve.  This section should also clearly convey why this project is important, what is the potential impact (applications, etc).
 
-The goal of this project is to create an artificial intelligence system to control multiple robots. Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones. The system could ideally learn from certain environments and apply its learning to new environments.
+The goal of this project is to create an artificial intelligence system called Prometheus to control and coordinate multiple robots. The robots themselves are expected to be relatively simple and do not make any decisions themselves. All the thinking and decision-making is done by Prometheus, which collects data from all the robots' sensors.
 
-The robots themselves are expected to have a fixed front-facing camera and ultrasonic sensor(s). Each robot may have multiple fixed ultrasonic sensors pointing in different directions, or a single rotating ultrasonic sensor that sweeps the area in front of the robot. The ultrasonic sensor(s) can measure distance between the robot and nearby objects, and the camera can take images of what the robot is facing.
+Applications for this type of system include robots in hazardous environments, such as in outer space (Mars, Moon, etc.), in nuclear plants after a nuclear disaster, and in military zones.  The system could ideally learn from this data in a given environment and apply its learning to new environments.
 
 The structure of the system is inspired from the functionality of the human brain, and is composed of the following four layers (in order of increasing abstraction): the Neural Network (NN), the Knowledge Node Network (KNN), the Expert System (ES), and the Meta Reasoner (META) \cite{vybihal-model}. The system can be seen in \autoref{model} and will be described in \autoref{sec:background}.
 
@@ -148,9 +148,12 @@ The structure of the system is inspired from the functionality of the human brai
 
 \subsection{Neural Network}
 
-The NN layer consists of a network of neurons with a similar structure to neurons in the human brain. In the context of this project, it is the interface between the robots' sensors (camera and ultrasonic) and the rest of the AI system.
+The NN layer consists of a network of neurons with a structure similar to neurons in the human brain. It is the interface between the robots' sensors and the rest of the AI system.
 
-The NN gathers raw sensor data and will build an abstract view of the robot's surrounding environment. It will analyze the contents of the camera image and achieve two main goals:
+The robots in Prof. Vybihal's lab have two types of sensors: cameras and ultrasonic sensors. The ultrasonic sensors can measure distance between the robot and nearby objects, and the camera can take images of what the robot is facing.
+%The robots have a fixed front-facing camera. Each robot may have multiple fixed ultrasonic sensors pointing in different directions, or a single rotating ultrasonic sensor that sweeps the area in front of the robot. 
+
+The NN gathers raw sensor data and will build an abstract view of the robot's surrounding environment. For each camera image, it will achieve two main goals:
 
 \begin{enumerate}
 	\item Classify objects observed in the image.
